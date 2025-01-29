@@ -25,10 +25,6 @@ export default function Chatbot() {
     setInputValue(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    // event.preventDefault();
-  };
-
   return (
     <div className="flex-1 flex flex-col gap-6 h-full">
       {/* Histórico de Conversa */}
