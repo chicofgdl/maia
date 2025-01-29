@@ -1,6 +1,7 @@
 'use client';  // Pasta app renderiza do lado do servidor. Essa linha informa que é para renderizar do lado cliente.
 import ChatInput from '@/components/ChatInput';
 import Sidebar from '../components/Sidebar';
+import Checklist from '@/components/Checklist';
 import { useState } from 'react';
 
 export default function Home() {
@@ -16,15 +17,13 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen flex bg-gray-600 p-6">
-      {/* Sidebar */}
-      <div className="w-60 bg-gray-400 p-6 rounded-2xl">
+
+      <div className="w-1/4 bg-gray-400 p-6 rounded-2xl">
         <Sidebar />
       </div>
-
-      {/* Main Content */}
       <div className="flex-1 flex flex-col px-6 gap-6">
         {/* Histórico de Conversa */}
-        <div className="h-[85%] w-[60%] bg-gray-400 rounded-2xl p-6 overflow-y-auto">
+        <div className="h-[85%] bg-gray-400 rounded-2xl p-6 overflow-y-auto">
           <div className="h-full w-full bg-gray-300 rounded-2xl p-8 flex flex-col gap-4">
             {messages.map((msg, index) => (
               <div
@@ -40,11 +39,14 @@ export default function Home() {
         </div>
 
         {/* Campo de Input */}
-        <div className="flex-1 p-4 w-[60%] bg-gray-400 rounded-2xl">
+        <div className="flex-1 p-4 bg-gray-400 rounded-2xl">
           <ChatInput
             onSubmit={(message: string) => addMessage(message, 'user')} // Exemplo: Adiciona mensagem do usuário
           />
         </div>
+      </div>
+      <div className="w-1/4 bg-gray-100 p-6 rounded-2xl">
+        <Checklist/>
       </div>
     </div>
   );
