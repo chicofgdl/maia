@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Plus, Trash, Pencil } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 
 const Checklist = () => {
   const [items, setItems] = useState([
@@ -7,8 +7,7 @@ const Checklist = () => {
     { id: 2, text: "Task 2", completed: false },
     { id: 3, text: "Task 3", completed: false },
   ]);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editText, setEditText] = useState("");
+
 
   const toggleCompletion = (id: number) => {
     setItems((prevItems) =>
@@ -36,7 +35,7 @@ const Checklist = () => {
   };
 
   return (
-    <div className="h-full bg-gray-200 p-4 overflow-y-auto">
+    <div className="h-full bg-gray-200 p-4 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
       <h2 className="text-xl font-semibold mb-4 flex justify-center">Onboarding</h2>
       <ul className="space-y-2">
         {items.map((item, index) => (
@@ -62,7 +61,6 @@ const Checklist = () => {
 
             {/* Botões de ação (somente aparecem ao passar o mouse) */}
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              {/* <button onClick={() => addItem(index)} className="p-1 bg-green-500 text-white rounded"> */}
               <button onClick={() => addItem(index)} className="p-1 bg-green-500 text-white rounded-full hover:bg-green-600">
               <Plus size={16} />
               </button>
