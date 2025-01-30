@@ -2,28 +2,24 @@ import React, { useState } from "react";
 import { Plus, Trash, ChevronDown } from "lucide-react";
 
 const Checklist = () => {
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      title: "Github",
-      expanded: false,
-      items: [
-        { id: 101, text: "Criar repositório", completed: false },
-        { id: 102, text: "Adicionar README", completed: false },
-      ],
-    },
-    {
-      id: 2,
-      title: "Configurações",
-      expanded: false,
-      items: [
-        { id: 201, text: "Configurar SSH", completed: false },
-        { id: 202, text: "Definir variáveis de ambiente", completed: false },
-      ],
-    },
-  ]);
 
-  const toggleCategory = (id: number) => {
+  type Item = {
+    id: number;
+    text: string;
+    completed: boolean;
+  };
+  
+  type Category = {
+    id: number;
+    title: string;
+    expanded: boolean;
+    items: Item[];
+  };
+  
+  const [categories, setCategories] = useState<Category[]>([]);
+  
+
+  const toggleCategory = (id) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === id ? { ...category, expanded: !category.expanded } : category
@@ -31,7 +27,7 @@ const Checklist = () => {
     );
   };
 
-  const toggleCompletion = (categoryId: number, itemId: number) => {
+  const toggleCompletion = (categoryId, itemId) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -46,7 +42,7 @@ const Checklist = () => {
     );
   };
 
-  const addItem = (categoryId: number) => {
+  const addItem = (categoryId) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -62,7 +58,7 @@ const Checklist = () => {
     );
   };
 
-  const removeItem = (categoryId: number, itemId: number) => {
+  const removeItem = (categoryId, itemId) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -75,10 +71,31 @@ const Checklist = () => {
     );
   };
 
+  const addCategory = () => {
+    setCategories((prevCategories) => [
+      ...prevCategories,
+      { id: Date.now(), title: "Novo Título", expanded: true, items: [] },
+    ]);
+  };
+
+  const removeCategory = (categoryId) => {
+    setCategories((prevCategories) => prevCategories.filter(category => category.id !== categoryId));
+  };
+
   return (
     <div className="h-full bg-gray-200 p-4 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
       <h2 className="text-xl font-semibold mb-4 flex justify-center">Onboarding</h2>
       <ul className="space-y-2">
+        {categories.length === 0 && (
+          <div className="flex justify-center">
+            <button
+              onClick={addCategory}
+              className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Adicionar Título
+            </button>
+          </div>
+        )}
         {categories.map((category) => (
           <li key={category.id} className="bg-white rounded-lg shadow-md">
             <div
@@ -92,6 +109,16 @@ const Checklist = () => {
             </div>
             {category.expanded && (
               <ul className="space-y-2 p-2">
+                {category.items.length === 0 && (
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => addItem(category.id)}
+                      className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                      Adicionar Item
+                    </button>
+                  </div>
+                )}
                 {category.items.map((item) => (
                   <li
                     key={item.id}
@@ -124,6 +151,20 @@ const Checklist = () => {
                     </div>
                   </li>
                 ))}
+                <div className="flex justify-between mt-2">
+                  <button
+                    onClick={() => addCategory()}
+                    className="flex-1 p-2 bg-blue-500 text-white rounded-l-lg hover:bg-blue-600"
+                  >
+                    Adicionar Título
+                  </button>
+                  <button
+                    onClick={() => removeCategory(category.id)}
+                    className="flex-1 p-2 bg-red-500 text-white rounded-r-lg hover:bg-red-600"
+                  >
+                    Remover Título
+                  </button>
+                </div>
               </ul>
             )}
           </li>
