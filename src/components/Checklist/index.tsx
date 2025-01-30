@@ -134,7 +134,7 @@ const Checklist = () => {
           <li key={category.id} className="bg-white rounded-lg shadow-md">
             <div
               className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-100"
-              onClick={() => toggleCategory(category.id)}
+              // onClick={() => toggleCategory(category.id)}
             >
               {editingCategory === category.id ? (
                 <input
@@ -156,6 +156,7 @@ const Checklist = () => {
                 </span>
               )}
               <ChevronDown
+              onClick={() => toggleCategory(category.id)}
                 className={`transform transition-transform ${
                   category.expanded ? "rotate-180" : "rotate-0"
                 }`}
