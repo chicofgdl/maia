@@ -116,7 +116,7 @@ const Checklist = () => {
       className="h-full bg-gray-200 p-4 overflow-y-auto"
       style={{ scrollbarWidth: "none" }}
     >
-      <h2 className="text-xl font-semibold mb-4 flex justify-center">
+      <h2 className="text-xl font-semibold mb-4 flex justify-center bg-blue-200 rounded-xl p-2">
         Onboarding
       </h2>
       <ul className="space-y-2">
