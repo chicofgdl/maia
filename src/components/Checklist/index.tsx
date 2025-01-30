@@ -2,27 +2,29 @@ import React, { useState } from "react";
 import { Plus, Trash, ChevronDown } from "lucide-react";
 
 const Checklist = () => {
-
   type Item = {
     id: number;
     text: string;
     completed: boolean;
   };
-  
+
   type Category = {
     id: number;
     title: string;
     expanded: boolean;
     items: Item[];
   };
-  
+
   const [categories, setCategories] = useState<Category[]>([]);
-  
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
 
   const toggleCategory = (id) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
-        category.id === id ? { ...category, expanded: !category.expanded } : category
+        category.id === id
+          ? { ...category, expanded: !category.expanded }
+          : category
       )
     );
   };
@@ -34,7 +36,9 @@ const Checklist = () => {
           ? {
               ...category,
               items: category.items.map((item) =>
-                item.id === itemId ? { ...item, completed: !item.completed } : item
+                item.id === itemId
+                  ? { ...item, completed: !item.completed }
+                  : item
               ),
             }
           : category
@@ -79,12 +83,42 @@ const Checklist = () => {
   };
 
   const removeCategory = (categoryId) => {
-    setCategories((prevCategories) => prevCategories.filter(category => category.id !== categoryId));
+    setCategories((prevCategories) =>
+      prevCategories.filter((category) => category.id !== categoryId)
+    );
+  };
+
+  const updateCategoryTitle = (categoryId, newTitle) => {
+    setCategories((prevCategories) =>
+      prevCategories.map((category) =>
+        category.id === categoryId ? { ...category, title: newTitle } : category
+      )
+    );
+  };
+
+  const updateItemText = (categoryId, itemId, newText) => {
+    setCategories((prevCategories) =>
+      prevCategories.map((category) =>
+        category.id === categoryId
+          ? {
+              ...category,
+              items: category.items.map((item) =>
+                item.id === itemId ? { ...item, text: newText } : item
+              ),
+            }
+          : category
+      )
+    );
   };
 
   return (
-    <div className="h-full bg-gray-200 p-4 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-      <h2 className="text-xl font-semibold mb-4 flex justify-center">Onboarding</h2>
+    <div
+      className="h-full bg-gray-200 p-4 overflow-y-auto"
+      style={{ scrollbarWidth: "none" }}
+    >
+      <h2 className="text-xl font-semibold mb-4 flex justify-center">
+        Onboarding
+      </h2>
       <ul className="space-y-2">
         {categories.length === 0 && (
           <div className="flex justify-center">
@@ -102,9 +136,29 @@ const Checklist = () => {
               className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-100"
               onClick={() => toggleCategory(category.id)}
             >
-              <span className="font-semibold text-lg">{category.title}</span>
+              {editingCategory === category.id ? (
+                <input
+                  type="text"
+                  value={category.title}
+                  onChange={(e) =>
+                    updateCategoryTitle(category.id, e.target.value)
+                  }
+                  onBlur={() => setEditingCategory(null)}
+                  autoFocus
+                  className="border p-1"
+                />
+              ) : (
+                <span
+                  className="font-semibold text-lg"
+                  onClick={() => setEditingCategory(category.id)}
+                >
+                  {category.title}
+                </span>
+              )}
               <ChevronDown
-                className={`transform transition-transform ${category.expanded ? "rotate-180" : "rotate-0"}`}
+                className={`transform transition-transform ${
+                  category.expanded ? "rotate-180" : "rotate-0"
+                }`}
               />
             </div>
             {category.expanded && (
@@ -131,9 +185,23 @@ const Checklist = () => {
                         onChange={() => toggleCompletion(category.id, item.id)}
                         className="w-6 h-6 cursor-pointer"
                       />
-                      <span className={item.completed ? "line-through text-gray-500" : "text-gray-900"}>
-                        {item.text}
-                      </span>
+                      {editingItem === item.id ? (
+                        <input
+                          type="text"
+                          value={item.text}
+                          onChange={(e) => updateItemText(category.id, item.id, e.target.value)}
+                          onBlur={() => setEditingItem(null)}
+                          autoFocus
+                          className="border p-1"
+                        />
+                      ) : (
+                        <span
+                          className={item.completed ? "line-through text-gray-500" : "text-gray-900"}
+                          onClick={() => setEditingItem(item.id)}
+                        >
+                          {item.text}
+                        </span>
+                      )}
                     </div>
                     <div className="flex gap-2">
                       <button
