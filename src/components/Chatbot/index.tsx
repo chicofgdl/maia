@@ -59,6 +59,8 @@ export default function Chatbot() {
         console.log("DOCUMENT CONTENTSSSSSS " + documentContents);
 
         try {
+          console.log("API KEY:", process.env.NEXT_PUBLIC_OPENAI_API_KEY);
+
             const response = await fetch(
                 "https://api.openai.com/v1/chat/completions",
                 {
