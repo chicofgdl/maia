@@ -46,15 +46,15 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full h-screen flex bg-gray-600 p-6 gap-6">
+    <div className="w-full h-screen flex bg-gray-300 p-6 gap-6 flex justify-center">
       {/* Sidebar */}
-      <div className="w-1/6 bg-gray-400 p-6 rounded-2xl">
+      <div className="w-1/6 bg-blue-300/50 p-4 rounded-2xl">
         <Sidebar />
       </div>
 
       {/* Conteúdo da página Profile */}
-      <div className="w-8/12 bg-gray-400 p-6 rounded-2xl">
-        <h1 className="text-2xl font-bold mb-6 bg-blue-200 rounded-xl p-2 flex justify-center">Perfil</h1>
+      <div className="w-3/4 bg-blue-300/50 p-6 rounded-2xl">
+        <h1 className="text-2xl font-bold mb-6 bg-blue-900/70 rounded-xl p-2 flex justify-center text-white">Perfil</h1>
         <div className="bg-white p-6 rounded-xl shadow-lg flex gap-6">
           {/* Foto de perfil e informações do usuário */}
           <div className="flex-none w-32 h-32 rounded-full bg-gray-300 overflow-hidden">
@@ -74,7 +74,7 @@ const Profile = () => {
 
         {/* Empresas */}
         <div className="mt-6 bg-white p-4 rounded-xl shadow-lg cursor-pointer">
-          <h2 className="text-xl font-semibold mb-4 flex justify-center">Empresas</h2>
+          <h2 className="text-xl font-semibold mb-4 flex justify-center   font-bold mb-6 bg-green-900/70 rounded-xl p-2 flex text-white">Empresas</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
 
             {mockCompanies.map((company) => (
@@ -97,7 +97,7 @@ const Profile = () => {
         {/* Funcionários */}
         {selectedCompany && (
           <div className="mt-6 bg-white p-4 rounded-xl shadow-lg cursor-pointer">
-            <h3 className="text-xl font-semibold mb-4 flex justify-center">Funcionários</h3>
+            <h3 className="text-xl font-semibold mb-4 flex justify-center font-bold mb-6 bg-green-900/70 rounded-xl p-2 flex text-white">Funcionários</h3>
             <div className="space-y-4">
               {employees.map((employee) => (
                 <div key={employee.id} className="flex items-center bg-slate-300 p-4 rounded-xl shadow-lg">
