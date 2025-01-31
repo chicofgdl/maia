@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Trash, ChevronDown } from "lucide-react";
 
 const Checklist = () => {
@@ -15,11 +15,21 @@ const Checklist = () => {
     items: Item[];
   };
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [editingCategory, setEditingCategory] = useState(null);
-  const [editingItem, setEditingItem] = useState(null);
+  const [categories, setCategories] = useState<Category[]>(() => {
+    // Carregar os dados salvos no localStorage ao iniciar
+    const savedCategories = localStorage.getItem("checklistCategories");
+    return savedCategories ? JSON.parse(savedCategories) : [];
+  });
 
-  const toggleCategory = (id) => {
+  const [editingCategory, setEditingCategory] = useState<number | null>(null);
+  const [editingItem, setEditingItem] = useState<number | null>(null);
+
+  // Salvar no localStorage sempre que as categorias forem alteradas
+  useEffect(() => {
+    localStorage.setItem("checklistCategories", JSON.stringify(categories));
+  }, [categories]);
+
+  const toggleCategory = (id: number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === id
@@ -29,7 +39,7 @@ const Checklist = () => {
     );
   };
 
-  const toggleCompletion = (categoryId, itemId) => {
+  const toggleCompletion = (categoryId: number, itemId: number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -46,7 +56,7 @@ const Checklist = () => {
     );
   };
 
-  const addItem = (categoryId) => {
+  const addItem = (categoryId: number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -62,7 +72,7 @@ const Checklist = () => {
     );
   };
 
-  const removeItem = (categoryId, itemId) => {
+  const removeItem = (categoryId: number, itemId: number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -82,13 +92,13 @@ const Checklist = () => {
     ]);
   };
 
-  const removeCategory = (categoryId) => {
+  const removeCategory = (categoryId: number) => {
     setCategories((prevCategories) =>
       prevCategories.filter((category) => category.id !== categoryId)
     );
   };
 
-  const updateCategoryTitle = (categoryId, newTitle) => {
+  const updateCategoryTitle = (categoryId: number, newTitle: string) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId ? { ...category, title: newTitle } : category
@@ -96,7 +106,7 @@ const Checklist = () => {
     );
   };
 
-  const updateItemText = (categoryId, itemId, newText) => {
+  const updateItemText = (categoryId: number, itemId: number, newText: string) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -132,10 +142,7 @@ const Checklist = () => {
         )}
         {categories.map((category) => (
           <li key={category.id} className="bg-white rounded-lg shadow-md">
-            <div
-              className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-100"
-              // onClick={() => toggleCategory(category.id)}
-            >
+            <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-100">
               {editingCategory === category.id ? (
                 <input
                   type="text"
@@ -156,7 +163,7 @@ const Checklist = () => {
                 </span>
               )}
               <ChevronDown
-              onClick={() => toggleCategory(category.id)}
+                onClick={() => toggleCategory(category.id)}
                 className={`transform transition-transform ${
                   category.expanded ? "rotate-180" : "rotate-0"
                 }`}
@@ -222,7 +229,7 @@ const Checklist = () => {
                 ))}
                 <div className="flex justify-between mt-2">
                   <button
-                    onClick={() => addCategory()}
+                    onClick={addCategory}
                     className="flex-1 p-2 bg-blue-500 text-white rounded-l-lg hover:bg-blue-600"
                   >
                     Adicionar Título
