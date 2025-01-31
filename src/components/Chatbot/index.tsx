@@ -11,7 +11,8 @@ interface Database {
 
 export default function Chatbot() {
     const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    const sleep = (ms: number) =>
+        new Promise((resolve) => setTimeout(resolve, ms));
     const [databases, setDatabases] = useState<Database[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [messages, setMessages] = useState([
@@ -51,7 +52,7 @@ export default function Chatbot() {
         }
 
         const documentContents = databases
-        .slice(0, 2)
+            .slice(0, 2)
             .filter((db) => db.content)
             .map((db) => `Fonte: ${db.name}\n${db.content}`)
             .join("\n\n");
