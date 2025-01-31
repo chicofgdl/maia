@@ -19,7 +19,7 @@ const Checklist = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
 
-  const toggleCategory = (id) => {
+  const toggleCategory = (id:number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === id
@@ -29,7 +29,7 @@ const Checklist = () => {
     );
   };
 
-  const toggleCompletion = (categoryId, itemId) => {
+  const toggleCompletion = (categoryId:number, itemId:number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -46,7 +46,7 @@ const Checklist = () => {
     );
   };
 
-  const addItem = (categoryId) => {
+  const addItem = (categoryId:number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -62,7 +62,7 @@ const Checklist = () => {
     );
   };
 
-  const removeItem = (categoryId, itemId) => {
+  const removeItem = (categoryId:number, itemId:number) => {
     setCategories((prevCategories) =>
       prevCategories.map((category) =>
         category.id === categoryId
@@ -82,7 +82,7 @@ const Checklist = () => {
     ]);
   };
 
-  const removeCategory = (categoryId) => {
+  const removeCategory = (categoryId:number) => {
     setCategories((prevCategories) =>
       prevCategories.filter((category) => category.id !== categoryId)
     );

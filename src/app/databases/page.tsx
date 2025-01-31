@@ -18,15 +18,19 @@ const Databases = () => {
   useEffect(() => {
     const storedDatabases = localStorage.getItem("databases");
     if (storedDatabases) {
-      setDatabases(JSON.parse(storedDatabases));
+      try {
+        setDatabases(JSON.parse(storedDatabases));
+      } catch (error) {
+        console.error("Erro ao carregar databases do localStorage:", error);
+      }
     }
   }, []);
 
-
   useEffect(() => {
-    localStorage.setItem("databases", JSON.stringify(databases));
+    if (databases.length > 0) {
+      localStorage.setItem("databases", JSON.stringify(databases));
+    }
   }, [databases]);
-
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -87,13 +91,23 @@ const Databases = () => {
           Databases
         </h1>
 
-        {/* Upload de Arquivo */}
-        <div className="mb-4 p-4 bg-green-400 rounded-2xl">
-          <input type="file" onChange={handleFileUpload} className="p-2" />
-        </div>
-
-        {/* Adicionar Link */}
+        {/* Upload de Arquivo e Adicionar Link - Estão lado a lado */}
         <div className="mb-4 p-4 bg-green-400 rounded-2xl flex gap-2">
+          {/* Botão de Upload */}
+          <button
+            onClick={() => document.getElementById("fileInput")?.click()}
+            className="p-2 bg-blue-600 text-white rounded flex items-center justify-center w-10 h-10"
+          >
+            +
+          </button>
+          <input
+            id="fileInput"
+            type="file"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+
+          {/* Input de Link */}
           <input
             type="text"
             placeholder="Link..."
@@ -108,7 +122,6 @@ const Databases = () => {
             Adicionar
           </button>
         </div>
-
         {/* Lista de arquivos e links */}
         <div className="space-y-4">
           {databases.map((db) => (
