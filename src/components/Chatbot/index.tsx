@@ -108,17 +108,17 @@ export default function Chatbot() {
     };
 
     return (
-        <div className="flex-1 flex flex-col gap-6 h-full">
+        <div className="flex-1 flex flex-col gap-4 h-full">
             {/* Histórico de Conversa */}
-            <div className="h-full rounded-2xl overflow-y-auto">
-                <div className="h-full w-full bg-gray-300 rounded-2xl p-8 flex flex-col gap-4">
+            <div className="h-full rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+                <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-200 rounded-2xl">
                     {messages.map((msg, index) => (
                         <div
                             key={index}
                             className={`p-3 rounded-lg ${
                                 msg.type === "user"
-                                    ? "bg-blue-500 self-end text-white"
-                                    : "bg-gray-200 self-start"
+                                    ? "bg-green-500/70 self-end text-white"
+                                    : "bg-blue-300/50 self-start"
                             }`}
                         >
                             {msg.text}
@@ -127,17 +127,17 @@ export default function Chatbot() {
                 </div>
             </div>
             {/* Campo de Input */}
-            <div className="flex-1 flex-row h-full gap-6 bg-gray-400 rounded-2xl w-full">
-                <div className="flex flex-row h-full gap-6">
+            <div className="flex-1 flex-row h-full gap-6 rounded-2xl w-full">
+                <div className="flex flex-row h-full gap-8">
                     <input
-                        className="w-full rounded-2xl p-6 bg-gray-300"
+                        className="w-full rounded-2xl p-6 bg-gray-200"
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
                         placeholder="Pergunte sobre o banco de dados"
                     />
                     <button type="button" onClick={handleSendMessage}>
-                        <div className="bg-blue-300 w-24 h-full rounded-2xl flex items-center justify-center">
+                        <div className="bg-blue-900/80 w-24 h-full rounded-2xl flex items-center justify-center text-white">
                             Buscar
                         </div>
                     </button>

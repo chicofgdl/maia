@@ -92,26 +92,26 @@ const Databases = () => {
     };
 
     return (
-        <div className="w-full h-screen flex bg-gray-600 p-6 gap-6">
+        <div className="w-full h-screen flex bg-gray-300 p-6 gap-6 flex justify-center">
             {/* Sidebar */}
-            <div className="w-1/6 bg-gray-400 p-6 rounded-2xl">
+            <div className="w-1/6 bg-blue-300/50 p-4 rounded-2xl">
                 <Sidebar />
             </div>
 
             {/* Conteúdo da página Databases */}
-            <div className="w-8/12 bg-gray-300 p-6 rounded-2xl">
-                <h1 className="text-2xl font-bold mb-6 bg-blue-200 rounded-xl p-2 flex justify-center">
+            <div className="w-3/4 bg-blue-300/50 p-6 rounded-2xl">
+                <h1 className="text-2xl font-bold mb-6 bg-blue-900/70 rounded-xl p-3 flex justify-center text-white">
                     Databases
                 </h1>
 
                 {/* Upload de Arquivo e Adicionar Link */}
-                <div className="mb-4 p-4 bg-green-400 rounded-2xl flex gap-2">
+                <div className="mb-4 p-4 bg-green-500/70 rounded-2xl flex gap-4">
                     {/* Botão de Upload */}
                     <button
                         onClick={() =>
                             document.getElementById("fileInput")?.click()
                         }
-                        className="p-2 bg-blue-600 text-white rounded flex items-center justify-center w-10 h-10"
+                        className="p-3 bg-blue-900/80 text-white rounded-xl flex items-center justify-center w-12 h-12"
                     >
                         +
                     </button>
@@ -128,11 +128,11 @@ const Databases = () => {
                         placeholder="Link..."
                         value={newLink}
                         onChange={(e) => setNewLink(e.target.value)}
-                        className="p-2 flex-1 rounded"
+                        className="p-3 flex-1 rounded-xl bg-gray-200"
                     />
                     <button
                         onClick={handleAddLink}
-                        className="p-2 bg-blue-600 text-white rounded"
+                        className="p-3 bg-blue-900/80 text-white rounded-xl"
                     >
                         Adicionar
                     </button>
@@ -143,7 +143,7 @@ const Databases = () => {
                     {databases.map((db) => (
                         <div
                             key={db.id}
-                            className="bg-white p-4 rounded-xl shadow-lg cursor-pointer hover:bg-gray-100"
+                            className="bg-white p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-100"
                             onClick={() => {
                                 if (db.url) {
                                     window.open(db.url, "_blank");
@@ -152,11 +152,11 @@ const Databases = () => {
                                 }
                             }}
                         >
-                            <h2 className="font-semibold">{db.name}</h2>
-                            <p>
+                            <h2 className="font-semibold text-lg text-gray-800">{db.name}</h2>
+                            <p className="text-gray-600">
                                 <strong>Tipo:</strong> {db.type}
                             </p>
-                            <p>
+                            <p className="text-gray-600">
                                 <strong>Setor:</strong> {db.setor}
                             </p>
                         </div>
@@ -173,15 +173,15 @@ const Databases = () => {
                             className="bg-white p-6 rounded-xl w-96"
                             onClick={(e) => e.stopPropagation()} // Impede fechamento ao clicar dentro
                         >
-                            <h2 className="text-xl font-bold mb-4">
+                            <h2 className="text-xl font-bold mb-4 text-gray-800">
                                 Conteúdo de {selectedContent.split("\n")[0]}
                             </h2>
-                            <pre className="text-sm whitespace-pre-wrap">
+                            <pre className="text-sm whitespace-pre-wrap text-gray-700">
                                 {selectedContent}
                             </pre>
                             <button
                                 onClick={() => setSelectedContent(null)}
-                                className="mt-4 bg-blue-500 text-white p-2 rounded"
+                                className="mt-4 bg-blue-900/80 text-white p-3 rounded-xl"
                             >
                                 Fechar
                             </button>
