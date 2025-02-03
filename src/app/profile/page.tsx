@@ -1,6 +1,7 @@
 'use client';
 import Sidebar from '@/components/Sidebar';
 import React, { useState } from 'react';
+import { Trash } from "lucide-react";
 
 const mockUserProfile = {
   name: 'Chico',
@@ -115,7 +116,7 @@ const Profile = () => {
                     onClick={() => handleDeleteEmployee(employee.id)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    🗑️
+                    <Trash size={24} />
                   </button>
                 </div>
               ))}

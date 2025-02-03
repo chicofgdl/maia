@@ -123,7 +123,7 @@ const Checklist = () => {
 
   return (
     <div
-      className="h-full bg-gray-200 p-4 overflow-y-auto"
+      className="h-full bg-gray-200 p-4 overflow-y-auto rounded-xl"
       style={{ scrollbarWidth: "none" }}
     >
       <h2 className="text-xl font-semibold mb-4 flex justify-center bg-blue-200 rounded-xl p-2">
@@ -175,7 +175,7 @@ const Checklist = () => {
                   <div className="flex justify-center">
                     <button
                       onClick={() => addItem(category.id)}
-                      className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 w-full"
                     >
                       Adicionar Item
                     </button>

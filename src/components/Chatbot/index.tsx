@@ -59,7 +59,7 @@ export default function Chatbot() {
         console.log("DOCUMENT CONTENTSSSSSS " + documentContents);
 
         try {
-          console.log("API KEY:", process.env.NEXT_PUBLIC_OPENAI_API_KEY);
+            console.log("API KEY:", process.env.NEXT_PUBLIC_OPENAI_API_KEY);
 
             const response = await fetch(
                 "https://api.openai.com/v1/chat/completions",
@@ -115,11 +115,10 @@ export default function Chatbot() {
                     {messages.map((msg, index) => (
                         <div
                             key={index}
-                            className={`p-3 rounded-lg ${
-                                msg.type === "user"
-                                    ? "bg-green-500/70 self-end text-white"
-                                    : "bg-blue-300/50 self-start"
-                            }`}
+                            className={`p-3 rounded-lg ${msg.type === "user"
+                                    ? "bg-green-500/70 self-end text-white font-bold"
+                                    : "bg-blue-300/50 self-start font-bold text-gray-700"
+                                }`}
                         >
                             {msg.text}
                         </div>
@@ -134,11 +133,11 @@ export default function Chatbot() {
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
-                        placeholder="Pergunte sobre o banco de dados"
+                        placeholder="Pergunte sobre o Onboarding"
                     />
                     <button type="button" onClick={handleSendMessage}>
-                        <div className="bg-blue-900/80 w-24 h-full rounded-2xl flex items-center justify-center text-white">
-                            Buscar
+                        <div className="bg-blue-900/80 w-24 h-full rounded-2xl flex items-center justify-center text-white font-bold">
+                            <img src="/assets/images/send.svg" alt="Ícone de cursor" className="w-6 h-6 mr-2" />
                         </div>
                     </button>
                 </div>
