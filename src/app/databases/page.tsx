@@ -1,6 +1,7 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
 import React, { useState, useEffect } from "react";
+import { Plus } from "lucide-react";
 
 interface Database {
     id: number;
@@ -92,7 +93,7 @@ const Databases = () => {
     };
 
     return (
-        <div className="w-full h-screen flex bg-gray-300 p-6 gap-6 flex justify-center">
+        <div className="w-full h-screen flex bg-gray-300 p-6 gap-6 justify-center">
             {/* Sidebar */}
             <div className="w-1/6 bg-blue-300/50 p-4 rounded-2xl">
                 <Sidebar />
@@ -105,7 +106,7 @@ const Databases = () => {
                 </h1>
 
                 {/* Upload de Arquivo e Adicionar Link */}
-                <div className="mb-4 p-4 bg-green-500/70 rounded-2xl flex gap-4">
+                <div className="mb-4 p-4 bg-green-900/70 rounded-2xl flex gap-4">
                     {/* Botão de Upload */}
                     <button
                         onClick={() =>
@@ -113,7 +114,7 @@ const Databases = () => {
                         }
                         className="p-3 bg-blue-900/80 text-white rounded-xl flex items-center justify-center w-12 h-12"
                     >
-                        +
+                        <img src="/assets/images/folder-open.svg" alt="Ícone de cursor" className="w-6 h-6 mr-2" />
                     </button>
                     <input
                         id="fileInput"
@@ -132,7 +133,7 @@ const Databases = () => {
                     />
                     <button
                         onClick={handleAddLink}
-                        className="p-3 bg-blue-900/80 text-white rounded-xl"
+                        className="p-3 bg-blue-900/80 text-white rounded-xl font-bold"
                     >
                         Adicionar
                     </button>

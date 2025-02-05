@@ -20,7 +20,7 @@ export default function Sidebar() {
     pathname === path ? "bg-blue-900" : "bg-blue-900/70";
 
   return (
-    <div className="h-full flex flex-col justify-between bg-grey-100">
+    <div className="h-full flex flex-col justify-between bg-grey-100 p-2">
       <div className="flex flex-col gap-20">
         <div className="h-30 rounded-xl flex flex-col items-center justify-center bg-blue-900/70 p-4">
           <h1 className="text-white text-2xl mb-2">MAIA</h1>
@@ -38,7 +38,7 @@ export default function Sidebar() {
                 "/"
               )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
             >
-              <MessageSquare className="w-6 h-6 text-gray-800 mr-2" />
+              <MessageSquare className="w-6 h-6 text-gray-100 mr-2" />
               <h2>Chats</h2>
             </div>
           </Link>
@@ -48,7 +48,7 @@ export default function Sidebar() {
                 "/databases"
               )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
             >
-              <Database className="w-6 h-6 text-gray-800 mr-2" />
+              <Database className="w-6 h-6 text-gray-100 mr-2" />
               <h2>Databases</h2>
             </div>
           </Link>
@@ -58,7 +58,7 @@ export default function Sidebar() {
                 "/dashboards"
               )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
             >
-              <LayoutDashboard className="w-6 h-6 text-gray-800 mr-2" />
+              <LayoutDashboard className="w-6 h-6 text-gray-100 mr-2" />
               <h2>Dashboards</h2>
             </div>
           </Link>
@@ -68,7 +68,7 @@ export default function Sidebar() {
                 "/profile"
               )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
             >
-              <User className="w-6 h-6 text-gray-800 mr-2" />
+              <User className="w-6 h-6 text-gray-100 mr-2" />
               <h2>Profile</h2>
             </div>
           </Link>
@@ -78,7 +78,7 @@ export default function Sidebar() {
                 "/instructions"
               )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
             >
-              <BookText className="w-6 h-6 text-gray-800 mr-2" />
+              <BookText className="w-6 h-6 text-gray-100 mr-2" />
               <h2>Instruções</h2>
             </div>
           </Link>
@@ -91,7 +91,7 @@ export default function Sidebar() {
               "/feedback"
             )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
           >
-            <MessageCircleQuestion className="w-6 h-6 text-gray-800 mr-2" />
+            <MessageCircleQuestion className="w-6 h-6 text-gray-100 mr-2" />
             <h2>Feedback</h2>
           </div>
         </Link>
@@ -101,7 +101,7 @@ export default function Sidebar() {
               "/bassist"
             )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
           >
-            <Bot className="w-6 h-6 text-gray-800 mr-2" />
+            <Bot className="w-6 h-6 text-gray-100 mr-2" />
             <h2>Bassist</h2>
           </div>
         </Link>
