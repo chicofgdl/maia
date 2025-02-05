@@ -52,7 +52,7 @@ export default function Sidebar() {
               <h2>Databases</h2>
             </div>
           </Link>
-          <Link href="/">
+          <Link href="/dashboards">
             <div
               className={`${isActive(
                 "/dashboards"

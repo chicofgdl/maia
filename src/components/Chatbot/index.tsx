@@ -103,7 +103,7 @@ export default function Chatbot() {
         setInputValue("");
     };
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event:any) => {
         setInputValue(event.target.value);
     };
 
