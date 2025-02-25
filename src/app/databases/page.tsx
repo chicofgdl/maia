@@ -1,7 +1,7 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
 import React, { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 
 interface Database {
     id: number;
@@ -114,7 +114,11 @@ const Databases = () => {
                         }
                         className="p-3 bg-blue-900/80 text-white rounded-xl flex items-center justify-center w-12 h-12"
                     >
-                        <img src="/assets/images/folder-open.svg" alt="Ícone de cursor" className="w-6 h-6 mr-2" />
+                        <img
+                            src="/assets/images/folder-open.svg"
+                            alt="Ícone de cursor"
+                            className="w-6 h-6 mr-2"
+                        />
                     </button>
                     <input
                         id="fileInput"
@@ -144,7 +148,7 @@ const Databases = () => {
                     {databases.map((db) => (
                         <div
                             key={db.id}
-                            className="bg-white p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-100"
+                            className="bg-white p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-100 flex flex-row"
                             onClick={() => {
                                 if (db.url) {
                                     window.open(db.url, "_blank");
@@ -153,13 +157,20 @@ const Databases = () => {
                                 }
                             }}
                         >
-                            <h2 className="font-semibold text-lg text-gray-800">{db.name}</h2>
-                            <p className="text-gray-600">
-                                <strong>Tipo:</strong> {db.type}
-                            </p>
-                            <p className="text-gray-600">
-                                <strong>Setor:</strong> {db.setor}
-                            </p>
+                            <div>
+                                <h2 className="font-semibold text-lg text-gray-800">
+                                    {db.name}
+                                </h2>
+                                <p className="text-gray-600">
+                                    <strong>Tipo:</strong> {db.type}
+                                </p>
+                                <p className="text-gray-600">
+                                    <strong>Setor:</strong> {db.setor}
+                                </p>
+                            </div>
+                            <div className="ml-auto flex items-center gap-4">
+                                <button className="p-3 bg-red-800 rounded-2xl"><Trash size={24} /></button>
+                            </div>
                         </div>
                     ))}
                 </div>
