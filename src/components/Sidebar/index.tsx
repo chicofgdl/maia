@@ -1,20 +1,34 @@
 "use client";
+import { useEffect, useState } from "react";
 import {
     User,
     LayoutDashboard,
     Database,
-    Bot,
     MessageSquare,
-    BookText,
     LogOut,
+    ChevronLeft,
+    ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation"; // Substituir useRouter por usePathname
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Sidebar() {
+    // COMECEI A MUDAR
     const pathname = usePathname();
     const router = useRouter();
+    const [isExpanded, setIsExpanded] = useState<boolean>(true);
+
+    useEffect(() => {
+        const storedState = localStorage.getItem("sidebarExpanded");
+        setIsExpanded(storedState === "true");
+    }, []);
+
+    const handleToggleSidebar = () => {
+        const newState = !isExpanded;
+        setIsExpanded(newState);
+        localStorage.setItem("sidebarExpanded", String(newState));
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -22,95 +36,87 @@ export default function Sidebar() {
     };
 
     const isActive = (path: string) =>
-        pathname === path ? "bg-blue-900" : "bg-blue-900/70";
+        pathname === path ? "bg-[#629E44]" : "bg-[#50A296]";
 
     return (
-        <div className="h-full flex flex-col justify-between bg-grey-100 p-2">
-            <div className="flex flex-col gap-20">
-                <div className="h-30 rounded-xl flex flex-col items-center justify-center bg-blue-900/70 p-4">
-                    <h1 className="text-white text-2xl mb-2">MAIA</h1>
+        <div
+            className={`h-full flex flex-col justify-between bg-gray-800 p-6 transition-all duration-300 rounded-2xl ${
+                isExpanded ? "w-60" : "w-28"
+            }`}
+        >
+            {/* Botão para Expandir/Recolher */}
+            <button
+                className={`h-10 p-2 rounded-lg bg-[#50A296] hover:bg-[#629E44] text-white justify-center ${
+                    isExpanded ? "self-end bg-[#629E44]" : "self-center w-full"}`}
+                onClick={handleToggleSidebar}
+            >
+                {isExpanded ? (
+                    <ChevronLeft size={20} />
+                ) : (
+                    <ChevronRight size={20} />
+                )}
+            </button>
+
+            {/* Logo */}
+            {isExpanded && (
+                <div className="flex flex-col items-center bg-[#50A296]/20 p-4 rounded-xl">
+                    {/* <h1 className="text-white text-2xl mb-2">MAIA</h1> */}
                     <Image
-                        src="/assets/images/onboarding_icon.png"
+                        src="/assets/images/maia_icon_2.png"
                         alt="Ícone onboarding"
-                        width={200}
-                        height={200}
+                        width={isExpanded ? 100 : 40}
+                        height={isExpanded ? 100 : 40}
                     />
                 </div>
-                <div className="flex flex-col gap-4">
-                    <Link href="/">
+            )}
+
+            {/* Links */}
+            <div className="flex flex-col gap-4 mt-4">
+                {[
+                    { href: "/", icon: MessageSquare, label: "Chats" },
+                    { href: "/databases", icon: Database, label: "Databases" },
+                    {
+                        href: "/dashboards",
+                        icon: LayoutDashboard,
+                        label: "Dashboards",
+                    },
+                    // {
+                    //     href: "/instructions",
+                    //     icon: BookText,
+                    //     label: "Instruções",
+                    // },
+                ].map(({ href, icon: Icon, label }) => (
+                    <Link key={href} href={href}>
                         <div
                             className={`${isActive(
-                                "/"
-                            )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
+                                href
+                            )} font-bold hover:bg-[#629E44] text-white h-12 rounded-xl flex items-center px-4`}
                         >
-                            <MessageSquare className="w-6 h-6 text-gray-100 mr-2" />
-                            <h2>Chats</h2>
+                            <Icon className="w-6 h-6 text-gray-100" />
+                            {isExpanded && (
+                                <span className="ml-2">{label}</span>
+                            )}
                         </div>
                     </Link>
-                    <Link href="/databases">
-                        <div
-                            className={`${isActive(
-                                "/databases"
-                            )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
-                        >
-                            <Database className="w-6 h-6 text-gray-100 mr-2" />
-                            <h2>Databases</h2>
-                        </div>
-                    </Link>
-                    <Link href="/">
-                        <div
-                            className={`${isActive(
-                                "/dashboards"
-                            )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
-                        >
-                            <LayoutDashboard className="w-6 h-6 text-gray-100 mr-2" />
-                            <h2>Dashboards</h2>
-                        </div>
-                    </Link>
-                    <Link href="/profile">
-                        <div
-                            className={`${isActive(
-                                "/profile"
-                            )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
-                        >
-                            <User className="w-6 h-6 text-gray-100 mr-2" />
-                            <h2>Profile</h2>
-                        </div>
-                    </Link>
-                    <Link href="/">
-                        <div
-                            className={`${isActive(
-                                "/instructions"
-                            )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
-                        >
-                            <BookText className="w-6 h-6 text-gray-100 mr-2" />
-                            <h2>Instruções</h2>
-                        </div>
-                    </Link>
-                </div>
+                ))}
             </div>
-            <div className="flex flex-col gap-4">
-                <Link href="/">
+            <div  className="flex flex-col gap-4 mt-4">
+                <Link href="/profile">
                     <div
                         className={`${isActive(
-                            "/bassist"
-                        )} font-bold hover:bg-blue-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
+                            "/profile"
+                        )} font-bold hover:bg-[#629E44] text-white h-12 rounded-xl flex items-center px-4`}
                     >
-                        <Bot className="w-6 h-6 text-gray-100 mr-2" />
-                        <h2>Bassist</h2>
+                        <User className="w-6 h-6 text-gray-100" />
+                        {isExpanded && <span className="ml-2">Perfil</span>}
                     </div>
                 </Link>
-                <button onClick={handleLogout}>
-                    <Link href="/">
-                        <div
-                            className={`${isActive(
-                                "/feedback"
-                            )} font-bold hover:bg-red-900 text-white h-12 rounded-xl flex items-center justify-start px-4 g-2`}
-                        >
-                            <LogOut className="w-6 h-6 text-gray-100 mr-2" />
-                            <h2>Logout</h2>
-                        </div>
-                    </Link>
+                {/* Logout */}
+                <button onClick={handleLogout} className="mt-auto">
+                    <div className="bg-[#50A296] font-bold hover:bg-red-900 text-white h-12 rounded-xl flex items-center px-4">
+                        <LogOut className="w-6 h-6 text-gray-100" />
+                        {isExpanded && <span className="ml-2">Sair</span>}
+                    </div>
                 </button>
             </div>
         </div>

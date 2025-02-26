@@ -112,13 +112,13 @@ export default function Chatbot() {
         <div className="flex-1 flex flex-col gap-4 h-full">
             {/* Histórico de Conversa */}
             <div className="h-full rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-                <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-200 rounded-2xl">
+                <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-800 rounded-2xl">
                     {messages.map((msg, index) => (
                         <div
                             key={index}
                             className={`p-3 rounded-lg ${msg.type === "user"
-                                    ? "bg-green-500/70 self-end text-white font-bold"
-                                    : "bg-blue-300/50 self-start font-bold text-gray-700"
+                                    ? "bg-[#629E44] self-end text-white font-bold"
+                                    : "bg-[#50A296] self-start font-bold text-gray-100"
                                 }`}
                         >
                             {msg.text}
