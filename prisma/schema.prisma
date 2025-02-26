@@ -15,15 +15,16 @@ model User {
   role     Role    @default(FUNCIONARIO)
 }
 
+model Dataset {
+  id          Int   @id @default(autoincrement()) // ID único
+  name        String   @unique  // Garante que não haja nomes duplicados
+  description String  // Descrição obrigatória
+  fileUrl     String?   // URL do arquivo (Firebase) Opcional momentaneamente
+  createdAt   DateTime @default(now()) // Data de criação
+}
+
 enum Role {
   ADMIN
   FUNCIONARIO
 }
 
-model Dataset {
-  id          Int   @id @default(uuid()) // ID único
-  name        String   // Nome do dataset
-  description String  // Descrição obrigatória
-  fileUrl     String   // URL do arquivo (Firebase)
-  createdAt   DateTime @default(now()) // Data de criação
-}
