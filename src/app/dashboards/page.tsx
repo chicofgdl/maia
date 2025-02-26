@@ -123,9 +123,7 @@ const Dashboards = () => {
 
   return (
     <div className="w-full h-screen flex flex-col md:flex-row bg-gray-300 p-6 gap-6 justify-center">
-      <div className="w-full md:w-1/6 bg-blue-300/50 p-4 rounded-2xl">
         <Sidebar />
-      </div>
       <div className="w-full md:w-3/4 bg-blue-300/50 p-6 rounded-2xl">
         <h1 className="text-2xl font-bold mb-6 bg-blue-900/70 rounded-xl p-2 flex justify-center text-white">Dashboards</h1>
         <div className="flex flex-col md:flex-row gap-6 mb-6">

@@ -93,15 +93,12 @@ const Databases = () => {
     };
 
     return (
-        <div className="w-full h-screen flex bg-gray-300 p-6 gap-6 justify-center">
-            {/* Sidebar */}
-            <div className="w-1/6 bg-blue-300/50 p-4 rounded-2xl">
+        <div className="w-full h-screen flex bg-gray-700 p-6 gap-6 justify-center">
                 <Sidebar />
-            </div>
 
             {/* Conteúdo da página Databases */}
-            <div className="w-3/4 bg-blue-300/50 p-6 rounded-2xl">
-                <h1 className="text-2xl font-bold mb-6 bg-blue-900/70 rounded-xl p-3 flex justify-center text-white">
+            <div className="w-3/4 bg-gray-800/50 p-6 rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+                <h1 className="text-2xl font-bold mb-6 bg-[#4C8CE6] rounded-xl p-3 flex justify-center text-white">
                     Databases
                 </h1>
 

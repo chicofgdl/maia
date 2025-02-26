@@ -117,8 +117,8 @@ export default function Chatbot() {
                         <div
                             key={index}
                             className={`p-3 rounded-lg ${msg.type === "user"
-                                    ? "bg-green-500/70 self-end text-white font-bold"
-                                    : "bg-blue-300/50 self-start font-bold text-gray-700"
+                                    ? "bg-[#629E44] self-end text-white font-bold"
+                                    : "bg-[#50A296] self-start font-bold text-gray-100"
                                 }`}
                         >
                             {msg.text}
