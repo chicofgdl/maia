@@ -20,7 +20,7 @@ model Dataset {
   name        String   @unique  // Garante que não haja nomes duplicados
   description String  // Descrição obrigatória
   fileUrl     String?   // URL do arquivo (Firebase) Opcional momentaneamente
-  createdAt   DateTime @default(now()) // Data de criação
+  createdAt   DateTime @default(now()) // Data de criação 
 }
 
 enum Role {
