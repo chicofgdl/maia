@@ -17,7 +17,6 @@ const Checklist = () => {
   };
 
   const [categories, setCategories] = useState<Category[]>(() => {
-    // Carregar os dados salvos no localStorage ao iniciar
     const savedCategories = localStorage.getItem("checklistCategories");
     return savedCategories ? JSON.parse(savedCategories) : [];
   });
@@ -25,7 +24,6 @@ const Checklist = () => {
   const [editingCategory, setEditingCategory] = useState<number | null>(null);
   const [editingItem, setEditingItem] = useState<number | null>(null);
 
-  // Salvar no localStorage sempre que as categorias forem alteradas
   useEffect(() => {
     localStorage.setItem("checklistCategories", JSON.stringify(categories));
   }, [categories]);
@@ -124,26 +122,26 @@ const Checklist = () => {
 
   return (
     <div
-      className="h-full bg-gray-200 p-4 overflow-y-auto rounded-xl"
+      className="h-full flex flex-col bg-gray-800 p-6 overflow-y-auto transition-all duration-300 rounded-2xl"
       style={{ scrollbarWidth: "none" }}
     >
-      <h2 className="text-xl font-semibold mb-4 flex justify-center bg-blue-200 rounded-xl p-2">
+      <h2 className="text-xl font-semibold mb-4 flex justify-center bg-[#50A296] rounded-xl p-2 text-white">
         Onboarding
       </h2>
-      <ul className="space-y-2">
+      <ul className="space-y-2 flex flex-col flex-1 gap-2">
         {categories.length === 0 && (
           <div className="flex justify-center">
             <button
               onClick={addCategory}
-              className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="p-2 w-full bg-[#4C8CE6] text-white rounded-lg hover:bg-[#629E44]"
             >
-              Adicionar Título
+              Novo Título
             </button>
           </div>
         )}
         {categories.map((category) => (
-          <li key={category.id} className="bg-white rounded-lg shadow-md">
-            <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-100">
+          <li key={category.id} className="bg-gray-700 rounded-lg shadow-md">
+            <div className="flex items-center justify-between p-3 cursor-pointer">
               {editingCategory === category.id ? (
                 <input
                   type="text"
@@ -153,7 +151,7 @@ const Checklist = () => {
                   }
                   onBlur={() => setEditingCategory(null)}
                   autoFocus
-                  className="border p-1"
+                  className=" p-1 bg-gray-700"
                 />
               ) : (
                 <span
@@ -176,16 +174,16 @@ const Checklist = () => {
                   <div className="flex justify-center">
                     <button
                       onClick={() => addItem(category.id)}
-                      className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 w-full"
+                      className="p-2 bg-[#50A296] text-white rounded-lg hover:bg-[#629E44] w-full"
                     >
-                      Adicionar Item
+                      Novo Item
                     </button>
                   </div>
                 )}
                 {category.items.map((item) => (
                   <li
                     key={item.id}
-                    className="flex items-center justify-between gap-4 p-3 bg-gray-100 rounded-lg hover:bg-gray-200"
+                    className="flex items-center justify-between gap-4 p-3 bg-gray-300 rounded-lg hover:bg-gray-200"
                   >
                     <div className="flex items-center gap-4">
                       <input
@@ -198,14 +196,20 @@ const Checklist = () => {
                         <input
                           type="text"
                           value={item.text}
-                          onChange={(e) => updateItemText(category.id, item.id, e.target.value)}
+                          onChange={(e) =>
+                            updateItemText(category.id, item.id, e.target.value)
+                          }
                           onBlur={() => setEditingItem(null)}
                           autoFocus
-                          className="border p-1"
+                          className="border p-1 text-black"
                         />
                       ) : (
                         <span
-                          className={item.completed ? "line-through text-gray-500" : "text-gray-900"}
+                          className={
+                            item.completed
+                              ? "line-through text-gray-500"
+                              : "text-gray-900"
+                          }
                           onClick={() => setEditingItem(item.id)}
                         >
                           {item.text}
@@ -215,13 +219,13 @@ const Checklist = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => addItem(category.id)}
-                        className="p-1 bg-green-500 text-white rounded-full hover:bg-green-600"
+                        className="p-1 bg-[#50A296] text-white rounded-full hover:bg-[#629E44]"
                       >
                         <Plus size={16} />
                       </button>
                       <button
                         onClick={() => removeItem(category.id, item.id)}
-                        className="p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                        className="p-1 bg-[#9E2449] text-white rounded-full hover:bg-[#CF7541]"
                       >
                         <Trash size={16} />
                       </button>
@@ -231,13 +235,13 @@ const Checklist = () => {
                 <div className="flex justify-between mt-2">
                   <button
                     onClick={addCategory}
-                    className="flex-1 p-2 bg-blue-500 text-white rounded-l-lg hover:bg-blue-600"
+                    className="flex-1 p-2 bg-[#4C8CE6] text-white rounded-l-lg hover:bg-blue-600"
                   >
                     Adicionar Título
                   </button>
                   <button
                     onClick={() => removeCategory(category.id)}
-                    className="flex-1 p-2 bg-red-500 text-white rounded-r-lg hover:bg-red-600"
+                    className="flex-1 p-2 bg-[#9E2449] text-white rounded-r-lg hover:bg-[#CF7541]"
                   >
                     Remover Título
                   </button>
