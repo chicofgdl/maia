@@ -137,7 +137,7 @@ export default function Chatbot() {
                         placeholder="Pergunte sobre o Onboarding"
                     />
                     <button type="button" onClick={handleSendMessage}>
-                        <div className="bg-blue-900/80 w-24 h-full rounded-2xl flex items-center justify-center text-white font-bold">
+                        <div className="bg-[#4C8CE6] w-24 h-full rounded-2xl flex items-center justify-center text-white font-bold">
                             <img src="/assets/images/send.svg" alt="Ícone de cursor" className="w-6 h-6 mr-2" />
                         </div>
                     </button>

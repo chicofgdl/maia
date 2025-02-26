@@ -170,7 +170,7 @@ const Checklist = () => {
                 {categories.map((category) => (
                     <li
                         key={category.id}
-                        className="bg-gray-700 rounded-lg shadow-md"
+                        className="bg-gray-700 rounded-lg shadow-md text-gray-300"
                     >
                         <div className="flex items-center justify-between p-3 cursor-pointer">
                             {editingCategory === category.id ? (

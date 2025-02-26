@@ -97,7 +97,7 @@ const Databases = () => {
                 <Sidebar />
 
             {/* Conteúdo da página Databases */}
-            <div className="w-3/4 bg-gray-800/50 p-6 rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+            <div className="w-10/12 bg-gray-800 p-6 rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
                 <h1 className="text-2xl font-bold mb-6 bg-[#4C8CE6] rounded-xl p-3 flex justify-center text-white">
                     Databases
                 </h1>
