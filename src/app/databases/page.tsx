@@ -2,6 +2,7 @@
 import Sidebar from "@/components/Sidebar";
 import React, { useState, useEffect } from "react";
 import { Plus, Trash } from "lucide-react";
+import Image from "next/image";
 
 interface Database {
     id: number;
@@ -94,27 +95,32 @@ const Databases = () => {
 
     return (
         <div className="w-full h-screen flex bg-gray-700 p-6 gap-6 justify-center">
-                <Sidebar />
+            <Sidebar />
 
             {/* Conteúdo da página Databases */}
-            <div className="w-10/12 bg-gray-800 p-6 rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+            <div
+                className="w-10/12 bg-gray-800 p-6 rounded-2xl overflow-y-auto"
+                style={{ scrollbarWidth: "none" }}
+            >
                 <h1 className="text-2xl font-bold mb-6 bg-[#4C8CE6] rounded-xl p-3 flex justify-center text-white">
                     Databases
                 </h1>
 
                 {/* Upload de Arquivo e Adicionar Link */}
-                <div className="mb-4 p-4 bg-green-900/70 rounded-2xl flex gap-4">
+                <div className="mb-4 p-4 bg-gray-700 rounded-2xl flex gap-4">
                     {/* Botão de Upload */}
                     <button
                         onClick={() =>
                             document.getElementById("fileInput")?.click()
                         }
-                        className="p-3 bg-blue-900/80 text-white rounded-xl flex items-center justify-center w-12 h-12"
+                        className="p-3 bg-[#50A296] text-white rounded-xl flex items-center justify-center w-12 h-12"
                     >
-                        <img
+                        <Image
                             src="/assets/images/folder-open.svg"
                             alt="Ícone de cursor"
-                            className="w-6 h-6 mr-2"
+                            className="w-6 h-6"
+                            width={6}
+                            height={6}
                         />
                     </button>
                     <input
@@ -134,18 +140,18 @@ const Databases = () => {
                     />
                     <button
                         onClick={handleAddLink}
-                        className="p-3 bg-blue-900/80 text-white rounded-xl font-bold"
+                        className="p-3 bg-[#629E44] text-white rounded-xl font-bold"
                     >
                         Adicionar
                     </button>
                 </div>
 
                 {/* Lista de arquivos e links */}
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {databases.map((db) => (
                         <div
                             key={db.id}
-                            className="bg-white p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-100 flex flex-row"
+                            className="bg-gray-700 p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-600 flex flex-col justify-between"
                             onClick={() => {
                                 if (db.url) {
                                     window.open(db.url, "_blank");
@@ -154,20 +160,30 @@ const Databases = () => {
                                 }
                             }}
                         >
+                            {/* Conteúdo do database */}
                             <div>
-                                <h2 className="font-semibold text-lg text-gray-800">
-                                    {db.name}
+                                <h2 className="font-semibold text-xl text-gray-100">
+                                    {db.name.slice(0, -4)
+                                    }
                                 </h2>
-                                <p className="text-gray-600">
+                                <p className="text-[#50A296]">
                                     <strong>Tipo:</strong> {db.type}
                                 </p>
-                                <p className="text-gray-600">
+                                <p className="text-[#50A296]">
                                     <strong>Setor:</strong> {db.setor}
                                 </p>
                             </div>
-                            <div className="ml-auto flex items-center gap-4">
-                                <button className="p-3 bg-red-800 rounded-2xl"><Trash size={24} /></button>
-                            </div>
+
+                            {/* Botão de remoção */}
+                            <button
+                                className="mt-4 p-3 bg-gray-800 rounded-2xl flex items-center justify-center"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Evita que clique remova e também abra a URL
+                                    // removeDatabase(db.id);
+                                }}
+                            >
+                                <Trash size={24} className="text-red-700"/>
+                            </button>
                         </div>
                     ))}
                 </div>

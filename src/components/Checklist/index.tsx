@@ -1,6 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Plus, Trash, ChevronDown, ChevronRight } from "lucide-react";
+import {
+    Plus,
+    Trash,
+    ChevronDown,
+    ChevronRight,
+    ChevronLeft,
+} from "lucide-react";
 
 const Checklist = () => {
     type Item = {
@@ -139,7 +145,7 @@ const Checklist = () => {
     return (
         <div
             className={`h-full flex flex-col bg-gray-800 p-6 overflow-y-auto transition-all duration-300 rounded-2xl ${
-                expanded ? "w-80" : "w-24"
+                expanded ? "w-full" : "w-24"
             }`}
             style={{ scrollbarWidth: "none" }}
         >
@@ -148,169 +154,176 @@ const Checklist = () => {
                 onClick={() => setExpanded(!expanded)}
             >
                 {expanded ? (
-                    <h2 className="text-xl font-semibold flex justify-center bg-[#50A296] rounded-xl p-2 text-white">
-                        Onboarding
-                    </h2>
+                    <div className="flex flex-row items-center justify-center w-full">
+                        <ChevronLeft size={24} className="justify-self-start" />
+                        <h2 className="text-xl font-semibold flex justify-center bg-[#50A296] rounded-xl p-2 text-white">
+                            Onboarding
+                        </h2>
+                    </div>
                 ) : (
                     <ChevronRight size={24} />
                 )}
             </div>
-{expanded && (
-            <ul className="space-y-2 flex flex-col flex-1 gap-2">
-                {categories.length === 0 && (
-                    <div className="flex justify-center">
-                        <button
-                            onClick={addCategory}
-                            className="p-2 w-full bg-[#4C8CE6] text-white rounded-lg hover:bg-[#629E44]"
-                        >
-                            Novo Título
-                        </button>
-                    </div>
-                )}
-                {categories.map((category) => (
-                    <li
-                        key={category.id}
-                        className="bg-gray-700 rounded-lg shadow-md text-gray-300"
-                    >
-                        <div className="flex items-center justify-between p-3 cursor-pointer">
-                            {editingCategory === category.id ? (
-                                <input
-                                    type="text"
-                                    value={category.title}
-                                    onChange={(e) =>
-                                        updateCategoryTitle(
-                                            category.id,
-                                            e.target.value
-                                        )
-                                    }
-                                    onBlur={() => setEditingCategory(null)}
-                                    autoFocus
-                                    className=" p-1 bg-gray-700"
-                                />
-                            ) : (
-                                <span
-                                    className="font-semibold text-lg"
-                                    onClick={() =>
-                                        setEditingCategory(category.id)
-                                    }
-                                >
-                                    {category.title}
-                                </span>
-                            )}
-                            <ChevronDown
-                                onClick={() => toggleCategory(category.id)}
-                                className={`transform transition-transform ${
-                                    category.expanded
-                                        ? "rotate-180"
-                                        : "rotate-0"
-                                }`}
-                            />
+            {expanded && (
+                <ul className="space-y-2 flex flex-col flex-1 gap-2">
+                    {categories.length === 0 && (
+                        <div className="flex justify-center">
+                            <button
+                                onClick={addCategory}
+                                className="p-2 w-full bg-[#4C8CE6] text-white rounded-lg hover:bg-[#629E44]"
+                            >
+                                Novo Título
+                            </button>
                         </div>
-                        {category.expanded && (
-                            <ul className="space-y-2 p-2">
-                                {category.items.length === 0 && (
-                                    <div className="flex justify-center">
-                                        <button
-                                            onClick={() => addItem(category.id)}
-                                            className="p-2 bg-[#50A296] text-white rounded-lg hover:bg-[#629E44] w-full"
-                                        >
-                                            Novo Item
-                                        </button>
-                                    </div>
-                                )}
-                                {category.items.map((item) => (
-                                    <li
-                                        key={item.id}
-                                        className="flex items-center justify-between gap-4 p-3 bg-gray-300 rounded-lg hover:bg-gray-200"
+                    )}
+                    {categories.map((category) => (
+                        <li
+                            key={category.id}
+                            className="bg-gray-700 rounded-lg shadow-md text-gray-300"
+                        >
+                            <div className="flex items-center justify-between p-3 cursor-pointer">
+                                {editingCategory === category.id ? (
+                                    <input
+                                        type="text"
+                                        value={category.title}
+                                        onChange={(e) =>
+                                            updateCategoryTitle(
+                                                category.id,
+                                                e.target.value
+                                            )
+                                        }
+                                        onBlur={() => setEditingCategory(null)}
+                                        autoFocus
+                                        className=" p-1 bg-gray-700"
+                                    />
+                                ) : (
+                                    <span
+                                        className="font-semibold text-lg"
+                                        onClick={() =>
+                                            setEditingCategory(category.id)
+                                        }
                                     >
-                                        <div className="flex items-center gap-4">
-                                            <input
-                                                type="checkbox"
-                                                checked={item.completed}
-                                                onChange={() =>
-                                                    toggleCompletion(
-                                                        category.id,
-                                                        item.id
-                                                    )
-                                                }
-                                                className="w-6 h-6 cursor-pointer"
-                                            />
-                                            {editingItem === item.id ? (
-                                                <input
-                                                    type="text"
-                                                    value={item.text}
-                                                    onChange={(e) =>
-                                                        updateItemText(
-                                                            category.id,
-                                                            item.id,
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        setEditingItem(null)
-                                                    }
-                                                    autoFocus
-                                                    className="border p-1 text-black"
-                                                />
-                                            ) : (
-                                                <span
-                                                    className={
-                                                        item.completed
-                                                            ? "line-through text-gray-500"
-                                                            : "text-gray-900"
-                                                    }
-                                                    onClick={() =>
-                                                        setEditingItem(item.id)
-                                                    }
-                                                >
-                                                    {item.text}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="flex gap-2">
+                                        {category.title}
+                                    </span>
+                                )}
+                                <ChevronDown
+                                    onClick={() => toggleCategory(category.id)}
+                                    className={`transform transition-transform ${
+                                        category.expanded
+                                            ? "rotate-180"
+                                            : "rotate-0"
+                                    }`}
+                                />
+                            </div>
+                            {category.expanded && (
+                                <ul className="space-y-2 p-2">
+                                    {category.items.length === 0 && (
+                                        <div className="flex justify-center">
                                             <button
                                                 onClick={() =>
                                                     addItem(category.id)
                                                 }
-                                                className="p-1 bg-[#50A296] text-white rounded-full hover:bg-[#629E44]"
+                                                className="p-2 bg-[#50A296] text-white rounded-lg hover:bg-[#629E44] w-full"
                                             >
-                                                <Plus size={16} />
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    removeItem(
-                                                        category.id,
-                                                        item.id
-                                                    )
-                                                }
-                                                className="p-1 bg-[#9E2449] text-white rounded-full hover:bg-[#CF7541]"
-                                            >
-                                                <Trash size={16} />
+                                                Novo Item
                                             </button>
                                         </div>
-                                    </li>
-                                ))}
-                                <div className="flex justify-between mt-2">
-                                    <button
-                                        onClick={addCategory}
-                                        className="flex-1 p-2 bg-[#4C8CE6] text-white rounded-l-lg hover:bg-blue-600"
-                                    >
-                                        Adicionar Título
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            removeCategory(category.id)
-                                        }
-                                        className="flex-1 p-2 bg-[#9E2449] text-white rounded-r-lg hover:bg-[#CF7541]"
-                                    >
-                                        Remover Título
-                                    </button>
-                                </div>
-                            </ul>
-                        )}
-                    </li>
-                ))}
-            </ul>
+                                    )}
+                                    {category.items.map((item) => (
+                                        <li
+                                            key={item.id}
+                                            className="flex items-center justify-between gap-4 p-3 bg-gray-300 rounded-lg hover:bg-gray-200"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={item.completed}
+                                                    onChange={() =>
+                                                        toggleCompletion(
+                                                            category.id,
+                                                            item.id
+                                                        )
+                                                    }
+                                                    className="w-6 h-6 cursor-pointer"
+                                                />
+                                                {editingItem === item.id ? (
+                                                    <input
+                                                        type="text"
+                                                        value={item.text}
+                                                        onChange={(e) =>
+                                                            updateItemText(
+                                                                category.id,
+                                                                item.id,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        onBlur={() =>
+                                                            setEditingItem(null)
+                                                        }
+                                                        autoFocus
+                                                        className="border p-1 text-black"
+                                                    />
+                                                ) : (
+                                                    <span
+                                                        className={
+                                                            item.completed
+                                                                ? "line-through text-gray-500"
+                                                                : "text-gray-900"
+                                                        }
+                                                        onClick={() =>
+                                                            setEditingItem(
+                                                                item.id
+                                                            )
+                                                        }
+                                                    >
+                                                        {item.text}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() =>
+                                                        addItem(category.id)
+                                                    }
+                                                    className="p-1 bg-[#50A296] text-white rounded-full hover:bg-[#629E44]"
+                                                >
+                                                    <Plus size={16} />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        removeItem(
+                                                            category.id,
+                                                            item.id
+                                                        )
+                                                    }
+                                                    className="p-1 bg-[#9E2449] text-white rounded-full hover:bg-[#CF7541]"
+                                                >
+                                                    <Trash size={16} />
+                                                </button>
+                                            </div>
+                                        </li>
+                                    ))}
+                                    <div className="flex justify-between mt-2">
+                                        <button
+                                            onClick={addCategory}
+                                            className="flex-1 p-2 bg-[#4C8CE6] text-white rounded-l-lg hover:bg-blue-600"
+                                        >
+                                            Adicionar Título
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                removeCategory(category.id)
+                                            }
+                                            className="flex-1 p-2 bg-[#9E2449] text-white rounded-r-lg hover:bg-[#CF7541]"
+                                        >
+                                            Remover Título
+                                        </button>
+                                    </div>
+                                </ul>
+                            )}
+                        </li>
+                    ))}
+                </ul>
             )}
         </div>
     );
