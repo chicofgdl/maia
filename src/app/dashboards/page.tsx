@@ -2,9 +2,9 @@
 import Sidebar from '@/components/Sidebar';
 import React, { useState, useMemo } from 'react';
 // import { Pie } from 'react-chartjs-2';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+// import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 
-Chart.register(ArcElement, Tooltip, Legend);
+// Chart.register(ArcElement, Tooltip, Legend);
 
 const mockCompanies = [
   {

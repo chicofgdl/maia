@@ -17,6 +17,13 @@ export default function LoginPage() {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleLogin();
+        }
+    };
+
     return (
         <div className="relative flex items-center justify-center h-screen">
             {/* Imagem de fundo */}
@@ -44,6 +51,7 @@ export default function LoginPage() {
                     placeholder="Usuário"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <input
                     className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
@@ -51,6 +59,7 @@ export default function LoginPage() {
                     placeholder="Senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
                 <button
                     className="w-full h-10 bg-gray-400 text-white p-2 rounded-xl"
