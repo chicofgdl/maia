@@ -18,7 +18,7 @@ export default function Home() {
     }, [router]);
 
     return (
-        <div className="w-full h-screen flex bg-gray-700 p-6 gap-6 justify-center">
+        <div className="w-full h-screen flex bg-gray-700 p-6 gap-4 justify-center">
             <Sidebar />
             <div className="w-9/12 bg-gray-800 p-4 rounded-2xl">
                 <Chatbot />
