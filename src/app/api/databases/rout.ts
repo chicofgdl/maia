@@ -6,28 +6,28 @@ const prisma = new PrismaClient();
 // Adiciona o Dataset no Banco
 export async function POST(req: Request) {
   try {
-    const { name, description, fileUrl } = await req.json(); /* Extrai o corpo da requisição e converte para JSON. 
-    Os campos de `const` são extraídos da requisição */
+    const { name, description, fileUrl } = await req.json(); /* Extrai o corpo da requisição e converte para JSON. 
+    Os campos de const são extraídos da requisição */
 
-    // Validação básica, falta o !fileUrl
+    // Validação básica, falta o !fileUrl
     if (!name || !description) {
       return NextResponse.json(
-        { error: "Nome e descrição são obrigatórios" },
+        { error: "Nome e descrição são obrigatórios" },
         { status: 400 }
       );
     }
     
-    // Confere se o nome do dataset já existe no Banco.
+    // Confere se o nome do dataset já existe no Banco.
     const existingDataset = await prisma.dataset.findUnique({
       where: { name },
     });
 
     if (existingDataset) {
-      return new Response(JSON.stringify({ error: "Este nome já existe" }), { status: 400 });
+      return new Response(JSON.stringify({ error: "Este nome já existe" }), { status: 400 });
     }
 
     const dataset = await prisma.dataset.create({ /* Cria um novo dataset no Banco.
-    Os dados fornecidos (name, description, fileUrl) são passados para ele. */
+    Os dados fornecidos (name, description, fileUrl) são passados para ele. */
       data: { name, description, fileUrl },
     });
 
@@ -39,15 +39,15 @@ export async function POST(req: Request) {
   }
 }
 
-// Busca um Dataset específico
+// Busca um Dataset específico
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url); // Extrai os query parameters
-    const id = searchParams.get("id"); // Obtém o valor do parâmetro id
+    const id = searchParams.get("id"); // Obtém o valor do parâmetro id
 
     if (!id) { // Verifica se o ID foi fornecido
       return NextResponse.json(
-        { error: "ID do dataset é obrigatório" },
+        { error: "ID do dataset é obrigatório" },
         { status: 400 }
       );
     }
@@ -58,7 +58,7 @@ export async function GET(req: Request) {
 
     if (!dataset) {
       return NextResponse.json(
-        { error: "Dataset não encontrado" },
+        { error: "Dataset não encontrado" },
         { status: 404 }
       );
     }
@@ -80,7 +80,7 @@ export async function PUT(req: Request) {
 
     if (!id) {
       return NextResponse.json(
-        { error: "ID do dataset é obrigatório" },
+        { error: "ID do dataset é obrigatório" },
         { status: 400 }
       );
     }
@@ -92,12 +92,12 @@ export async function PUT(req: Request) {
 
     if (!existingDataset) {
       return NextResponse.json(
-        { error: "Dataset não encontrado" },
+        { error: "Dataset não encontrado" },
         { status: 404 }
       );
     }
 
-    // Verifica se o nome foi alterado e se é diferente do nome atual.
+    // Verifica se o nome foi alterado e se é diferente do nome atual.
     if (name && name !== existingDataset.name) {
       const datasetWithSameName = await prisma.dataset.findUnique({
         where: { name },
@@ -105,7 +105,7 @@ export async function PUT(req: Request) {
 
       if (datasetWithSameName) {
         return NextResponse.json(
-          { error: "Este nome já existe" },
+          { error: "Este nome já existe" },
           { status: 400 }
         );
       }
@@ -118,7 +118,7 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(updatedDataset);
     
-    // Caso ID Inválido ou Violação de Constraint Unique
+    // Caso ID Inválido ou Violação de Constraint Unique
   } catch (error) {
     console.error("Erro ao atualizar dataset:", error);
     return NextResponse.json(
@@ -136,7 +136,7 @@ export async function DELETE(req: Request) {
 
     if (!id) {
       return NextResponse.json(
-        { error: "ID do dataset é obrigatório" },
+        { error: "ID do dataset é obrigatório" },
         { status: 400 }
       );
     }
@@ -148,7 +148,7 @@ export async function DELETE(req: Request) {
 
     if (!existingDataset) {
       return NextResponse.json(
-        { error: "Dataset não encontrado" },
+        { error: "Dataset não encontrado" },
         { status: 404 }
       );
     }
@@ -157,7 +157,7 @@ export async function DELETE(req: Request) {
       where: { id: parseInt(id) },
     });
 
-    return NextResponse.json({ message: "Dataset excluído com sucesso" });
+    return NextResponse.json({ message: "Dataset excluído com sucesso" });
   } catch (error) {
     console.error("Erro ao excluir dataset:", error);
     return NextResponse.json(
