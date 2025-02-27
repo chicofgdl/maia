@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
+import Image from 'next/image';
 
 interface Database {
     id: number;
@@ -19,7 +20,7 @@ export default function Chatbot() {
     const [messages, setMessages] = useState([
         {
             type: "bot",
-            text: "Eu sou um chatbot que responde perguntas sobre sua empresa!",
+            text: "Eu sou MAIA, um chatbot que responde perguntas sobre sua empresa!",
         },
     ]);
 
@@ -47,10 +48,7 @@ export default function Chatbot() {
 
         addMessage(inputValue, "user");
 
-        if (!databases || databases.length === 0) {
-            console.warn("Nenhum database encontrado.");
-            return;
-        }
+        setInputValue(""); 
 
         const documentContents = databases
             .slice(0, 2)
@@ -100,31 +98,48 @@ export default function Chatbot() {
                 "bot"
             );
         }
-
-        setInputValue("");
     };
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede o comportamento padrão de "Enter", que poderia enviar o formulário
+            handleSendMessage(); // Chama a função de envio da mensagem
+        }
+    };
+
     return (
         <div className="flex-1 flex flex-col gap-4 h-full">
             {/* Histórico de Conversa */}
             <div className="h-full rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-                <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-800 rounded-2xl">
-                    {messages.map((msg, index) => (
-                        <div
-                            key={index}
-                            className={`p-3 rounded-lg ${msg.type === "user"
-                                    ? "bg-[#629E44] self-end text-white font-bold"
-                                    : "bg-[#50A296] self-start font-bold text-gray-100"
-                                }`}
-                        >
-                            {msg.text}
-                        </div>
-                    ))}
-                </div>
+            <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-800 rounded-2xl">
+    {messages.map((msg, index) => (
+        <div
+            key={index}
+            className={`flex items-start gap-4 p-3 rounded-lg max-w-[60%] ${
+                msg.type === "user"
+                    ? "bg-[#629E44] self-end text-white font-bold"
+                    : "bg-[#50A296] self-start font-bold text-gray-100"
+            }`}
+        >
+            {msg.type !== "user" && (
+                <Image
+                src="/assets/images/maia_icon_2.png"
+                alt="Bot"
+                width={28} // Define a largura da imagem
+                height={28} // Define a altura da imagem
+                className="rounded-full bg-gray-800"
+            />
+            )}
+            <div className="flex-1 break-words whitespace-pre-wrap">
+                {msg.text}
+            </div>
+        </div>
+    ))}
+</div>
             </div>
             {/* Campo de Input */}
             <div className="flex-1 flex-row h-full gap-6 rounded-2xl w-full">
@@ -134,6 +149,7 @@ export default function Chatbot() {
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
                         placeholder="Pergunte sobre o Onboarding"
                     />
                     <button type="button" onClick={handleSendMessage}>
