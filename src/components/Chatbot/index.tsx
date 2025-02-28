@@ -112,7 +112,7 @@ export default function Chatbot() {
     };
 
     return (
-        <div className="flex-1 flex flex-col gap-4 h-full">
+        <div className="flex-1 flex flex-col gap-4 h-full w-full">
             {/* Histórico de Conversa */}
             <div className="h-full rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
             <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-800 rounded-2xl">
