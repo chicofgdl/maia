@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -7,26 +7,68 @@ export default function LoginPage() {
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [validUsers, setValidUsers] = useState<{ username: string; password: string }[]>([]);
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [newUsername, setNewUsername] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+
+    useEffect(() => {
+        const storedUsers = JSON.parse(localStorage.getItem("validUsers") || "[]");
+        if (storedUsers.length === 0) {
+            const defaultUsers = [
+                { username: "admin", password: "1234" },
+            ];
+            localStorage.setItem("validUsers", JSON.stringify(defaultUsers));
+            setValidUsers(defaultUsers);
+        } else {
+            setValidUsers(storedUsers);
+        }
+    }, []);
 
     const handleLogin = () => {
-        if (username === "admin" && password === "1234") {
-            localStorage.setItem("token", "fake-token"); // Substituir por token real (JSON Web Token)
+        const validUser = validUsers.find(
+            (user) => user.username === username && user.password === password
+        );
+        if (validUser) {
+            localStorage.setItem("token", "fake-token");
             router.push("/");
         } else {
             alert("Credenciais inválidas");
         }
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleLogin();
+    const handleRegister = () => {
+        if (!newUsername && !newPassword) {
+            alert("Preencha os campos!");
+            return;
+        } else if (!newUsername) {
+            alert("Preencha o campo de usuário!");
+            return;
+        } else if (!newPassword) {
+            alert("Preencha o campo da senha!");
+            return;
+        } else if (validUsers.some((user) => user.username === newUsername)) {
+            alert("Nome de usuário já cadastrado!");
+            return;
         }
+
+        const newUser = { username: newUsername, password: newPassword };
+        const updatedUsers = [...validUsers, newUser];
+
+        setValidUsers(updatedUsers);
+        localStorage.setItem("validUsers", JSON.stringify(updatedUsers));
+
+        alert("Conta criada com sucesso!");
+        setShowRegisterModal(false);
+        setNewUsername("");
+        setNewPassword("");
+
+        console.log("Usuários cadastrados: ", updatedUsers);
+        console.log("Usuários cadastrados no localStorage: ", JSON.parse(localStorage.getItem("validUsers")));
     };
 
     return (
         <div className="relative flex items-center justify-center h-screen">
-            {/* Imagem de fundo */}
             <Image
                 src="/assets/images/home_page_mock.png"
                 alt="Background"
@@ -34,10 +76,8 @@ export default function LoginPage() {
                 objectFit="cover"
                 className="absolute top-0 left-0 w-full h-full z-0"
             />
-
-            {/* Modal de login */}
-            <div className="relative bg-white p-6 rounded-lg shadow-md w-full max-w-sm h-auto z-10 bg-opacity-90">
-                <div className="flex flex-row items-center justify-center mb-4">
+            <div className="relative bg-white p-6 rounded-lg shadow-md w-full max-w-sm h-auto z-10 bg-opacity-95">
+                <div className="flex flex-row items-center justify-center mb-4 gap-3">
                     <Image
                         src="/assets/images/maia_icon_2.png"
                         width={40}
@@ -51,7 +91,6 @@ export default function LoginPage() {
                     placeholder="Usuário"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    onKeyDown={handleKeyDown}
                 />
                 <input
                     className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
@@ -59,15 +98,59 @@ export default function LoginPage() {
                     placeholder="Senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={handleKeyDown}
                 />
-                <button
-                    className="w-full h-10 bg-gray-400 text-white p-2 rounded-xl"
-                    onClick={handleLogin}
-                >
-                    Entrar
-                </button>
+                <div className="flex flex-col gap-4">
+                    <button
+                        className="w-full h-10 bg-[#629E44] text-white p-2 rounded-xl font-bold"
+                        onClick={handleLogin}
+                    >
+                        Entrar
+                    </button>
+                    <button
+                        className="w-full h-10 bg-[#50A296] text-white p-2 rounded-xl font-bold"
+                        onClick={() => setShowRegisterModal(true)}
+                    >
+                        Registrar
+                    </button>
+                </div>
             </div>
+
+            {/* Modal de Criar conta */}
+            {showRegisterModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-80 z-20">
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+                        <h2 className="text-2xl font-bold text-center mb-4 text-gray-600">Criar Conta</h2>
+                        <input
+                            className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
+                            type="text"
+                            placeholder="Novo Usuário"
+                            value={newUsername}
+                            onChange={(e) => setNewUsername(e.target.value)}
+                        />
+                        <input
+                            className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
+                            type="password"
+                            placeholder="Nova Senha"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <div className="flex flex-col gap-4">
+                            <button
+                                className="w-full h-10 bg-[#50A296] text-white p-2 rounded-xl font-bold"
+                                onClick={handleRegister}
+                            >
+                                Registrar
+                            </button>
+                            <button
+                                className="w-full h-10 bg-[#9E2449] text-white p-2 rounded-xl font-bold"
+                                onClick={() => setShowRegisterModal(false)}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
