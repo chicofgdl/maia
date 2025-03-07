@@ -103,7 +103,7 @@ const Databases = () => {
         <div className="w-full h-screen flex bg-gray-700 p-6 gap-4 justify-center">
             <Sidebar />
             <div
-                className="w-full bg-gray-800 p-6 rounded-2xl overflow-y-auto"
+                className="w-full bg-gray-800 p-4 rounded-2xl overflow-y-auto"
                 style={{ scrollbarWidth: "none" }}
             >
                 <h1 className="text-2xl font-bold mb-6 bg-[#629E44] rounded-xl p-3 flex justify-center text-white">
