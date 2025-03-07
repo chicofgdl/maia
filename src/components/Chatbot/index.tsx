@@ -148,7 +148,7 @@ ${documentContents}`,
 </div>
             </div>
             <div className="flex-1 flex-row h-full gap-6 rounded-2xl w-full">
-                <div className="flex flex-row h-full gap-8">
+                <div className="flex flex-row h-full gap-8 text-black font-semibold">
                     <input
                         className="w-full rounded-2xl p-6 bg-gray-200"
                         type="text"

@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 
@@ -38,14 +38,26 @@ const mockCompanies = [
 ];
 
 const Profile = () => {
+    const [currentUser, setCurrentUser] = useState<any>(null);
     const [selectedCompany, setSelectedCompany] = useState<number | null>(null);
     const [employees, setEmployees] = useState<any[]>([]);
     const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
     const [newEmployee, setNewEmployee] = useState({
-        name: "",
+        username: "",
         role: "",
         password: "",
+        email: "",
+        company: "",
     });
+
+    useEffect(() => {
+        const storedUser = JSON.parse(
+            localStorage.getItem("currentUser") || "{}"
+        );
+        console.log("Usuário atual:", storedUser);
+        setCurrentUser(storedUser);
+        console.log("Usuário atual:", currentUser);
+    }, []);
 
     const handleCompanyClick = (companyId: number) => {
         setSelectedCompany(companyId);
@@ -71,8 +83,11 @@ const Profile = () => {
 
         const newEmployeeData = {
             id: newId,
-            name: newEmployee.name,
+            username: newEmployee.username,
             role: newEmployee.role,
+            email: newEmployee.email,
+            company: newEmployee.company,
+            createdAt: new Date().toLocaleDateString(),
         };
 
         // Obtém os usuários existentes do localStorage
@@ -80,7 +95,7 @@ const Profile = () => {
             localStorage.getItem("validUsers") || "[]"
         );
         // Cria um login e salva no localStorage
-        const username = newEmployee.name.toLowerCase().replace(/ /g, "");
+        const username = newEmployee.username.toLowerCase().replace(/ /g, "");
 
         // Verifica se o usuário já existe
         const userExists = existingUsers.some(
@@ -96,13 +111,17 @@ const Profile = () => {
         setEmployees([...mockCompanies[companyIndex].employees]);
 
         const newUser = {
-            username,
+            username: newEmployee.username,
             password: newEmployee.password,
             role: newEmployee.role,
+            email: newEmployee.email,
+            company: newEmployee.company,
+            createdAt: new Date().toLocaleDateString("pt-BR"),
         };
 
         // Atualiza a lista de usuários e salva no localStorage
         const updatedUsers = [...existingUsers, newUser];
+        console.log(newUser);
         localStorage.setItem("validUsers", JSON.stringify(updatedUsers));
 
         console.log("Usuários cadastrados:", updatedUsers);
@@ -112,7 +131,13 @@ const Profile = () => {
         );
 
         // Reseta o formulário e fecha o modal
-        setNewEmployee({ name: "", role: "", password: "" });
+        setNewEmployee({
+            username: "",
+            role: "",
+            password: "",
+            email: "",
+            company: "",
+        });
         setShowAddEmployeeModal(false);
     };
 
@@ -121,7 +146,9 @@ const Profile = () => {
             employees.filter((employee) => employee.id !== employeeId)
         );
     };
-
+    if (!currentUser) {
+        return <div>Carregando...</div>; // ou alguma outra forma de indicação de carregamento
+    }
     return (
         <div className="w-full h-screen flex bg-gray-700 p-6 gap-6 justify-center">
             <Sidebar />
@@ -145,21 +172,21 @@ const Profile = () => {
                     </div>
                     <div className="flex-1 text-black">
                         <h2 className="text-2xl font-semibold text-white">
-                            {mockUserProfile.name}
+                            {currentUser.username}
                         </h2>
                         <p className="text-lg text-white">
                             <strong className="text-[#50A296]">Email:</strong>{" "}
-                            {mockUserProfile.email}
+                            {currentUser.email}
                         </p>
                         <p className="text-lg text-white">
                             <strong className="text-[#50A296]">Cargo:</strong>{" "}
-                            {mockUserProfile.role}
+                            {currentUser.role}
                         </p>
                         <p className="text-lg text-white">
                             <strong className="text-[#50A296]">
                                 Membro desde:
                             </strong>{" "}
-                            {mockUserProfile.createdAt}
+                            {currentUser.createdAt}
                         </p>
                     </div>
                 </div>
@@ -206,7 +233,7 @@ const Profile = () => {
                                     <div className="w-16 h-16 bg-gray-300 rounded-full overflow-hidden">
                                         <Image
                                             src="/assets/images/profile_mock.png"
-                                            alt={employee.name}
+                                            alt={employee.username}
                                             width={100}
                                             height={100}
                                             objectFit="cover"
@@ -239,7 +266,7 @@ const Profile = () => {
             </div>
             {showAddEmployeeModal && (
                 <div className="fixed inset-0 bg-gray-700 bg-opacity-70 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-gray-600">
                         <h2 className="text-lg font-bold mb-4 text-gray-600">
                             Novo Funcionário
                         </h2>
@@ -247,11 +274,23 @@ const Profile = () => {
                             type="text"
                             placeholder="Nome"
                             className="w-full p-2 border rounded mb-2"
-                            value={newEmployee.name}
+                            value={newEmployee.username}
                             onChange={(e) =>
                                 setNewEmployee({
                                     ...newEmployee,
-                                    name: e.target.value,
+                                    username: e.target.value,
+                                })
+                            }
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="w-full p-2 border rounded mb-2"
+                            value={newEmployee.email}
+                            onChange={(e) =>
+                                setNewEmployee({
+                                    ...newEmployee,
+                                    email: e.target.value,
                                 })
                             }
                         />
@@ -264,6 +303,18 @@ const Profile = () => {
                                 setNewEmployee({
                                     ...newEmployee,
                                     role: e.target.value,
+                                })
+                            }
+                        />
+                        <input
+                            type="text"
+                            placeholder="Empresa"
+                            className="w-full p-2 border rounded mb-2"
+                            value={newEmployee.company}
+                            onChange={(e) =>
+                                setNewEmployee({
+                                    ...newEmployee,
+                                    company: e.target.value,
                                 })
                             }
                         />

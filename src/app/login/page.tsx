@@ -7,22 +7,21 @@ export default function LoginPage() {
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [validUsers, setValidUsers] = useState<{ username: string; password: string }[]>([]);
+    const [validUsers, setValidUsers] = useState<
+        { username: string; password: string }[]
+    >([]);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
     const [newUsername, setNewUsername] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [newRole, setNewRole] = useState("");
+    const [newCompany, setNewCompany] = useState("");
 
     useEffect(() => {
-        const storedUsers = JSON.parse(localStorage.getItem("validUsers") || "[]");
-        if (storedUsers.length === 0) {
-            const defaultUsers = [
-                { username: "admin", password: "1234" },
-            ];
-            localStorage.setItem("validUsers", JSON.stringify(defaultUsers));
-            setValidUsers(defaultUsers);
-        } else {
-            setValidUsers(storedUsers);
-        }
+        const storedUsers = JSON.parse(
+            localStorage.getItem("validUsers") || "[]"
+        );
+        setValidUsers(storedUsers);
     }, []);
 
     const handleLogin = () => {
@@ -30,6 +29,7 @@ export default function LoginPage() {
             (user) => user.username === username && user.password === password
         );
         if (validUser) {
+            localStorage.setItem("currentUser", JSON.stringify(validUser));
             localStorage.setItem("token", "fake-token");
             router.push("/");
         } else {
@@ -38,23 +38,29 @@ export default function LoginPage() {
     };
 
     const handleRegister = () => {
-        if (!newUsername && !newPassword) {
-            alert("Preencha os campos!");
-            return;
-        } else if (!newUsername) {
-            alert("Preencha o campo de usuário!");
-            return;
-        } else if (!newPassword) {
-            alert("Preencha o campo da senha!");
+        if (
+            !newUsername ||
+            !newPassword ||
+            !newEmail ||
+            !newRole ||
+            !newCompany
+        ) {
+            alert("Preencha todos os campos!");
             return;
         } else if (validUsers.some((user) => user.username === newUsername)) {
             alert("Nome de usuário já cadastrado!");
             return;
         }
 
-        const newUser = { username: newUsername, password: newPassword };
+        const newUser = {
+            username: newUsername,
+            email: newEmail,
+            password: newPassword,
+            role: newRole,
+            company: newCompany,
+            createdAt: new Date().toLocaleDateString("pt-BR"),
+        };
         const updatedUsers = [...validUsers, newUser];
-
         setValidUsers(updatedUsers);
         localStorage.setItem("validUsers", JSON.stringify(updatedUsers));
 
@@ -62,9 +68,13 @@ export default function LoginPage() {
         setShowRegisterModal(false);
         setNewUsername("");
         setNewPassword("");
+        setNewEmail("");
+        setNewRole("");
+        setNewCompany("");
 
         console.log("Usuários cadastrados: ", updatedUsers);
-        console.log("Usuários cadastrados no localStorage: ", JSON.parse(localStorage.getItem("validUsers")));
+        console.log("Usuário atual: ", newUser
+        );
     };
 
     return (
@@ -119,7 +129,9 @@ export default function LoginPage() {
             {showRegisterModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-80 z-20">
                     <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
-                        <h2 className="text-2xl font-bold text-center mb-4 text-gray-600">Criar Conta</h2>
+                        <h2 className="text-2xl font-bold text-center mb-4 text-gray-600">
+                            Criar Conta
+                        </h2>
                         <input
                             className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
                             type="text"
@@ -129,10 +141,31 @@ export default function LoginPage() {
                         />
                         <input
                             className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
+                            type="email"
+                            placeholder="Email"
+                            value={newEmail}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                        />
+                        <input
+                            className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
                             type="password"
                             placeholder="Nova Senha"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <input
+                            className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
+                            type="text"
+                            placeholder="Cargo"
+                            value={newRole}
+                            onChange={(e) => setNewRole(e.target.value)}
+                        />
+                        <input
+                            className="w-full p-2 border rounded-xl mb-4 focus:outline-gray-400 text-gray-600 text-lg"
+                            type="text"
+                            placeholder="Empresa Associada"
+                            value={newCompany}
+                            onChange={(e) => setNewCompany(e.target.value)}
                         />
                         <div className="flex flex-col gap-4">
                             <button
