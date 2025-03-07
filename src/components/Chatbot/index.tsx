@@ -13,19 +13,29 @@ interface Database {
 
 export default function Chatbot() {
     const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-    const sleep = (ms: number) =>
-        new Promise((resolve) => setTimeout(resolve, ms));
+    // const sleep = (ms: number) =>
+    //     new Promise((resolve) => setTimeout(resolve, ms));
     const [databases, setDatabases] = useState<Database[]>([]);
     const [inputValue, setInputValue] = useState("");
-    const [messages, setMessages] = useState([
-        {
-            type: "bot",
-            text: "Eu sou MAIA, um chatbot que responde perguntas sobre sua empresa!",
-        },
-    ]);
+    const [messages, setMessages] = useState(() => {
+        if (typeof window !== "undefined") {
+            const storedMessages = localStorage.getItem("messages");
+            return storedMessages ? JSON.parse(storedMessages) : [
+                {
+                    type: "bot",
+                    text: "Eu sou MAIA, um chatbot que responde perguntas sobre sua empresa!",
+                },
+            ];
+        }
+        return [];
+    });
 
     const addMessage = (message: string, type: "user" | "bot") => {
-        setMessages((prev) => [...prev, { type, text: message }]);
+        setMessages((prev) => {
+            const updatedMessages = [...prev, { type, text: message }];
+            localStorage.setItem("messages", JSON.stringify(updatedMessages));
+            return updatedMessages;
+        });
     };
 
     useEffect(() => {
@@ -43,7 +53,7 @@ export default function Chatbot() {
     }, []);
 
     const handleSendMessage = async () => {
-        await sleep(1000);
+        // await sleep(1000);
         if (!inputValue.trim()) return;
 
         addMessage(inputValue, "user");
@@ -55,11 +65,8 @@ export default function Chatbot() {
             .filter((db) => db.content)
             .map((db) => `Fonte: ${db.name}\n${db.content}`)
             .join("\n\n");
-        console.log("DOCUMENT CONTENTSSSSSS " + documentContents);
 
         try {
-            console.log("API KEY:", process.env.NEXT_PUBLIC_OPENAI_API_KEY);
-
             const response = await fetch(
                 "https://api.openai.com/v1/chat/completions",
                 {
@@ -74,8 +81,8 @@ export default function Chatbot() {
                             {
                                 role: "system",
                                 content: `Você é um assistente virtual projetado para apoiar novos funcionários durante o processo de onboarding na empresa. 
-    Você pode usar os seguintes documentos como referência para suas respostas:
-    ${documentContents}`,
+Você pode usar os seguintes documentos como referência para suas respostas:
+${documentContents}`,
                             },
                             {
                                 role: "user",
@@ -106,14 +113,13 @@ export default function Chatbot() {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // Impede o comportamento padrão de "Enter", que poderia enviar o formulário
-            handleSendMessage(); // Chama a função de envio da mensagem
+            e.preventDefault(); 
+            handleSendMessage(); 
         }
     };
 
     return (
         <div className="flex-1 flex flex-col gap-4 h-full w-full">
-            {/* Histórico de Conversa */}
             <div className="h-full rounded-2xl overflow-y-auto" style={{ scrollbarWidth: "none" }}>
             <div className="min-h-full flex flex-col gap-4 p-8 bg-gray-800 rounded-2xl">
     {messages.map((msg, index) => (
@@ -129,8 +135,8 @@ export default function Chatbot() {
                 <Image
                 src="/assets/images/maia_icon_2.png"
                 alt="Bot"
-                width={28} // Define a largura da imagem
-                height={28} // Define a altura da imagem
+                width={28} 
+                height={28} 
                 className="rounded-full bg-gray-800"
             />
             )}
@@ -141,7 +147,6 @@ export default function Chatbot() {
     ))}
 </div>
             </div>
-            {/* Campo de Input */}
             <div className="flex-1 flex-row h-full gap-6 rounded-2xl w-full">
                 <div className="flex flex-row h-full gap-8">
                     <input
