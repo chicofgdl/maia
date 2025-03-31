@@ -5,34 +5,40 @@ import { Trash } from "lucide-react";
 import Image from "next/image";
 
 const mockUserProfile = {
-    name: "Chico",
-    email: "fglb@cin.ufpe.br",
-    role: "Administrador",
-    createdAt: "30/01/2025",
     profilePicture: "/assets/images/profile_mock.png",
 };
 
-const mockCompanies = [
+const setoresMockados = [
     {
         id: 1,
-        name: "Empresa A",
+        name: "Setor de Desenvolvimento",
         image: "/assets/images/company_icon.png",
         employees: [
-            { id: 1, name: "Funcionário 1", role: "Desenvolvedor" },
-            { id: 2, name: "Funcionário 2", role: "Desenvolvedor" },
-            { id: 3, name: "Funcionário 3", role: "Desenvolvedor" },
-            { id: 4, name: "Funcionário 4", role: "Designer" },
-            { id: 5, name: "Funcionário 5", role: "Designer" },
-            { id: 6, name: "Funcionário 6", role: "Tech leader" },
+            { id: 1, name: "Desenvolvedor 1", role: "Desenvolvedor" },
+            { id: 2, name: "Desenvolvedor 2", role: "Desenvolvedor" },
+            { id: 3, name: "Desenvolvedor 3", role: "Desenvolvedor" },
+            { id: 4, name: "Desenvolvedor 4", role: "Desenvolvedor" },
+            { id: 5, name: "Desenvolvedor 5", role: "Desenvolvedor" },
+            { id: 6, name: "Desenvolvedor 6", role: "Desenvolvedor" },
         ],
     },
     {
         id: 2,
-        name: "Empresa B",
+        name: "Setor de Design",
         image: "/assets/images/company_icon.png",
         employees: [
-            { id: 7, name: "Funcionário 7", role: "Gerente" },
-            { id: 8, name: "Funcionário 8", role: "Analista" },
+            { id: 7, name: "Designer 7", role: "Designer" },
+            { id: 8, name: "Designer 8", role: "Designer" },
+        ],
+    },
+    {
+        id: 3,
+        name: "Setor de Dados",
+        image: "/assets/images/company_icon.png",
+        employees: [
+            { id: 7, name: "Analista 8", role: "Analista" },
+            { id: 8, name: "Analista 9", role: "Analista" },
+            { id: 9, name: "Analista 10", role: "Analista" },
         ],
     },
 ];
@@ -48,6 +54,7 @@ const Profile = () => {
         password: "",
         email: "",
         company: "",
+        createdAt: "",
     });
 
     useEffect(() => {
@@ -61,7 +68,7 @@ const Profile = () => {
 
     const handleCompanyClick = (companyId: number) => {
         setSelectedCompany(companyId);
-        const selected = mockCompanies.find(
+        const selected = setoresMockados.find(
             (company) => company.id === companyId
         );
         setEmployees(selected ? selected.employees : []);
@@ -70,14 +77,14 @@ const Profile = () => {
     const handleAddEmployee = () => {
         if (!selectedCompany) return;
 
-        const companyIndex = mockCompanies.findIndex(
+        const companyIndex = setoresMockados.findIndex(
             (c) => c.id === selectedCompany
         );
         if (companyIndex === -1) return;
 
         const newId =
             Math.max(
-                ...mockCompanies.flatMap((c) => c.employees.map((e) => e.id)),
+                ...setoresMockados.flatMap((c) => c.employees.map((e) => e.id)),
                 0
             ) + 1;
 
@@ -90,14 +97,12 @@ const Profile = () => {
             createdAt: new Date().toLocaleDateString(),
         };
 
-        // Obtém os usuários existentes do localStorage
         const existingUsers = JSON.parse(
             localStorage.getItem("validUsers") || "[]"
         );
-        // Cria um login e salva no localStorage
+
         const username = newEmployee.username.toLowerCase().replace(/ /g, "");
 
-        // Verifica se o usuário já existe
         const userExists = existingUsers.some(
             (user) => user.username === username
         );
@@ -107,8 +112,8 @@ const Profile = () => {
             return;
         }
         // Atualiza a empresa com o novo funcionário
-        mockCompanies[companyIndex].employees.push(newEmployeeData);
-        setEmployees([...mockCompanies[companyIndex].employees]);
+        setoresMockados[companyIndex].employees.push(newEmployeeData);
+        setEmployees([...setoresMockados[companyIndex].employees]);
 
         const newUser = {
             username: newEmployee.username,
@@ -121,7 +126,7 @@ const Profile = () => {
 
         // Atualiza a lista de usuários e salva no localStorage
         const updatedUsers = [...existingUsers, newUser];
-        console.log(newUser);
+        console.log("newUser: ", newUser);
         localStorage.setItem("validUsers", JSON.stringify(updatedUsers));
 
         console.log("Usuários cadastrados:", updatedUsers);
@@ -137,6 +142,7 @@ const Profile = () => {
             password: "",
             email: "",
             company: "",
+            createdAt: "",
         });
         setShowAddEmployeeModal(false);
     };
@@ -147,7 +153,7 @@ const Profile = () => {
         );
     };
     if (!currentUser) {
-        return <div>Carregando...</div>; // ou alguma outra forma de indicação de carregamento
+        return <div>Carregando...</div>;
     }
     return (
         <div className="w-full h-screen flex bg-gray-700 p-6 gap-6 justify-center">
@@ -197,10 +203,10 @@ const Profile = () => {
                         Empresas
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-                        {mockCompanies.map((company) => (
+                        {setoresMockados.map((company) => (
                             <div
                                 key={company.id}
-                                className="bg-[#50A296] p-4 rounded-xl shadow-lg cursor-pointer hover:bg-[#50A296]/80"
+                                className="bg-[#50A296]/50 p-4 rounded-xl shadow-lg cursor-pointer hover:bg-[#50A296]/80"
                                 onClick={() => handleCompanyClick(company.id)}
                             >
                                 <Image
@@ -210,7 +216,7 @@ const Profile = () => {
                                     height={100}
                                     className="w-full h-32 object-cover rounded-md"
                                 />
-                                <h3 className="mt-2 text-center font-semibold">
+                                <h3 className="mt-2 text-center font-semibold text-gray-200">
                                     {company.name}
                                 </h3>
                             </div>
@@ -228,7 +234,7 @@ const Profile = () => {
                             {employees.map((employee) => (
                                 <div
                                     key={employee.id}
-                                    className="flex items-center bg-slate-300 p-4 rounded-xl shadow-lg"
+                                    className="flex items-center bg-[#50A296]/50 p-4 rounded-xl shadow-lg"
                                 >
                                     <div className="w-16 h-16 bg-gray-300 rounded-full overflow-hidden">
                                         <Image
@@ -240,7 +246,7 @@ const Profile = () => {
                                         />
                                     </div>
                                     <div className="flex-1 pl-4">
-                                        <p className="font-semibold">
+                                        <p className="font-semibold text-gray-200">
                                             {employee.name} | {employee.role}
                                         </p>
                                     </div>
