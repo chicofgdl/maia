@@ -113,12 +113,14 @@ export default function LoginPage() {
                     <button
                         className="w-full h-10 bg-[#629E44] text-white p-2 rounded-xl font-bold"
                         onClick={handleLogin}
+                        data-test="login-button-entrar"
                     >
                         Entrar
                     </button>
                     <button
                         className="w-full h-10 bg-[#50A296] text-white p-2 rounded-xl font-bold"
                         onClick={() => setShowRegisterModal(true)}
+                        data-test="login-button-registrar"
                     >
                         Registrar
                     </button>

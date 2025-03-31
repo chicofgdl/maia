@@ -87,7 +87,7 @@ export default function Sidebar() {
                     //     label: "Instruções",
                     // },
                 ].map(({ href, icon: Icon, label }) => (
-                    <Link key={href} href={href}>
+                    <Link key={href} href={href} data-test={`sidebar-button-${href}`}>
                         <div
                             className={`${isActive(
                                 href
@@ -105,7 +105,7 @@ export default function Sidebar() {
 
 
             <div className="flex flex-col gap-4 mt-4">
-                <Link href="/profile">
+                <Link href="/profile" data-test="sidebar-button-profile">
                     <div
                         className={`${isActive(
                             "/profile"
