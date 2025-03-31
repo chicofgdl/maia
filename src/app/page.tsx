@@ -20,10 +20,10 @@ export default function Home() {
     return (
         <div className="w-full h-screen flex bg-gray-700 p-6 gap-4 justify-center">
             <Sidebar />
-            <div className="w-9/12 bg-gray-800 p-4 rounded-2xl">
+            <div className="w-full bg-gray-800 p-4 rounded-2xl">
                 <Chatbot />
             </div>
-            <div className="w-3/12">
+            <div>
                 <Checklist />
             </div>
         </div>

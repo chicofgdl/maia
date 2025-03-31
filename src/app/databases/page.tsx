@@ -39,13 +39,15 @@ const Databases = () => {
     }, [databases]);
 
     // Caso queira ver o conteúdo dos arquivos .txt no console
-    // useEffect(() => {
-    //   databases.forEach((db) => {
-    //     if (db.content) {
-    //       console.log(db.content);
-    //     }
-    //   });
-    // }, [databases]);
+    console.log("Databases:")
+    console.log(databases)
+    useEffect(() => {
+      databases.forEach((db) => {
+        if (db.content) {
+          console.log(db.content);
+        }
+      });
+    }, [databases]);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -93,22 +95,23 @@ const Databases = () => {
         setNewLink("");
     };
 
-    return (
-        <div className="w-full h-screen flex bg-gray-700 p-6 gap-6 justify-center">
-            <Sidebar />
+    const removeDatabase = (id: number) => {
+        setDatabases((prev) => prev.filter((db) => db.id !== id));
+    };
 
-            {/* Conteúdo da página Databases */}
+    return (
+        <div className="w-full h-screen flex bg-gray-700 p-6 gap-4 justify-center">
+            <Sidebar />
             <div
-                className="w-10/12 bg-gray-800 p-6 rounded-2xl overflow-y-auto"
+                className="w-full bg-gray-800 p-4 rounded-2xl overflow-y-auto"
                 style={{ scrollbarWidth: "none" }}
             >
-                <h1 className="text-2xl font-bold mb-6 bg-[#4C8CE6] rounded-xl p-3 flex justify-center text-white">
+                <h1 className="text-2xl font-bold mb-6 bg-[#629E44] rounded-xl p-3 flex justify-center text-white">
                     Databases
                 </h1>
 
                 {/* Upload de Arquivo e Adicionar Link */}
                 <div className="mb-4 p-4 bg-gray-700 rounded-2xl flex gap-4">
-                    {/* Botão de Upload */}
                     <button
                         onClick={() =>
                             document.getElementById("fileInput")?.click()
@@ -140,18 +143,18 @@ const Databases = () => {
                     />
                     <button
                         onClick={handleAddLink}
-                        className="p-3 bg-[#629E44] text-white rounded-xl font-bold"
+                        className="p-3 bg-[#50A296] text-white rounded-xl font-bold"
                     >
                         Adicionar
                     </button>
                 </div>
 
                 {/* Lista de arquivos e links */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                     {databases.map((db) => (
                         <div
                             key={db.id}
-                            className="bg-gray-700 p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-600 flex flex-col justify-between"
+                            className="bg-gray-700 p-4 rounded-2xl shadow-lg cursor-pointer hover:bg-gray-600/70 flex flex-col justify-between"
                             onClick={() => {
                                 if (db.url) {
                                     window.open(db.url, "_blank");
@@ -176,10 +179,10 @@ const Databases = () => {
 
                             {/* Botão de remoção */}
                             <button
-                                className="mt-4 p-3 bg-gray-800 rounded-2xl flex items-center justify-center"
+                                className="mt-4 p-3 bg-gray-800 rounded-2xl flex items-center justify-center hover:bg-red-700/40"
                                 onClick={(e) => {
                                     e.stopPropagation(); // Evita que clique remova e também abra a URL
-                                    // removeDatabase(db.id);
+                                    removeDatabase(db.id);
                                 }}
                             >
                                 <Trash size={24} className="text-red-700"/>
@@ -195,7 +198,7 @@ const Databases = () => {
                         onClick={() => setSelectedContent(null)} // Fecha ao clicar fora
                     >
                         <div
-                            className="bg-white p-6 rounded-xl w-96"
+                            className="bg-white p-6 rounded-xl max-w-7xl min-w-96 flex flex-col justify-center items-center"
                             onClick={(e) => e.stopPropagation()} // Impede fechamento ao clicar dentro
                         >
                             <h2 className="text-xl font-bold mb-4 text-gray-800">

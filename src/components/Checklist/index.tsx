@@ -145,7 +145,7 @@ const Checklist = () => {
     return (
         <div
             className={`h-full flex flex-col bg-gray-800 p-6 overflow-y-auto transition-all duration-300 rounded-2xl ${
-                expanded ? "w-full" : "w-24"
+                expanded ? "w-96" : "w-24"
             }`}
             style={{ scrollbarWidth: "none" }}
         >
